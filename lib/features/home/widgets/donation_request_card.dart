@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/constants/apptheme.dart';
+import 'package:rokto/core/utils/apptheme.dart';
 import '../models/donation_request_model.dart';
 
 class DonationRequestCard extends StatelessWidget {
@@ -66,14 +66,14 @@ class DonationRequestCard extends StatelessWidget {
                 width: 48.w,
                 height: 48.h,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  color: AppColors.primaryColor.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     request.bloodGroup,
                     style: TextStyle(
-                      color: AppTheme.primaryColor,
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w900,
                       fontSize: 16.sp,
                     ),
@@ -86,7 +86,7 @@ class DonationRequestCard extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onDonate,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryColor,
+                    backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(

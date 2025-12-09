@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/constants/apptheme.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
 
@@ -44,12 +44,12 @@ class NavBar extends StatelessWidget {
                 width: 56.w,
                 height: 56.h,
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor,
+                  color: AppColors.primaryColor,
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 4),
                   boxShadow: [
                     BoxShadow(
-                      color: AppTheme.primaryColor.withOpacity(0.4),
+                      color: AppColors.primaryColor.withOpacity(0.4),
                       blurRadius: 10,
                       offset: const Offset(0, 5),
                     ),
@@ -72,7 +72,7 @@ class NavBar extends StatelessWidget {
       onPressed: () {},
       icon: Icon(
         icon,
-        color: isActive ? AppTheme.primaryColor : Colors.grey.shade400,
+        color: isActive ? AppColors.primaryColor : Colors.grey.shade400,
         size: 26.sp,
       ),
     );

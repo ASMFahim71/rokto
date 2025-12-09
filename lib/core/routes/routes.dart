@@ -3,6 +3,7 @@ import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/features/auth/auth_landing/auth_landing.dart';
 import 'package:rokto/features/auth/register_screen/view/register_screen.dart';
 import 'package:rokto/features/auth/signin_screen/view/sign_in.dart';
+import 'package:rokto/features/home/view/home_view.dart';
 import 'package:rokto/features/onboarding_screen/view/onboarding_screen.dart';
 import 'package:rokto/features/splash_screen/splash_screen.dart';
 
@@ -20,6 +21,7 @@ class AppPages {
       RouteEntity(path: AppRoutesNames.authLanding, page: const AuthLanding()),
       RouteEntity(path: AppRoutesNames.signIn, page: const SignInScreen()),
       RouteEntity(path: AppRoutesNames.register, page: const RegisterScreen()),
+      RouteEntity(path: AppRoutesNames.home, page: const HomeView()),
     ];
   }
 

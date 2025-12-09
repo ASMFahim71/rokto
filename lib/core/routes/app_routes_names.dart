@@ -4,4 +4,5 @@ class AppRoutesNames {
   static const String authLanding = '/auth-landing';
   static const String signIn = '/sign-in';
   static const String register = '/register';
+  static const String home = '/home';
 }

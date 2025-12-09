@@ -5,7 +5,6 @@ import 'package:rokto/features/home/view/navBar.dart';
 import 'package:rokto/features/home/view/userImage.dart';
 import 'package:rokto/features/home/widgets/donation_request_header.dart';
 import 'package:rokto/features/home/widgets/grid_menu.dart';
-import '../../../core/constants/apptheme.dart';
 import '../controller/home_controller.dart';
 import '../widgets/home_banner_carousel.dart';
 import '../widgets/donation_request_card.dart'; 
@@ -66,7 +65,7 @@ class HomeView extends ConsumerWidget {
                         height: 180.h,
                         child: Center(
                           child: CircularProgressIndicator(
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primaryColor,
                           ),
                         ),
                       ),
@@ -95,7 +94,7 @@ class HomeView extends ConsumerWidget {
                         ),
                         loading: () => const Center(
                           child: CircularProgressIndicator(
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primaryColor,
                           ),
                         ),
                         error: (err, stack) =>
