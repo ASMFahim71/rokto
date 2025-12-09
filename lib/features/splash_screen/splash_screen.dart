@@ -1,6 +1,5 @@
-import 'package:bloodlagbe/core/constants/apptheme.dart';
 import 'package:flutter/material.dart';
-
+import 'package:rokto/core/constants/apptheme.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
