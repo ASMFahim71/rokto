@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common_widgets/apptext_field.dart';
 import 'package:rokto/core/common_widgets/elevated_button.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/utils/apptheme.dart';
 import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
 import 'package:rokto/features/auth/signin_screen/provider/signin_notifier.dart';
@@ -115,6 +116,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               CustomElevatedButton(
                 text: 'LOG IN',
                 onPressed: () {
+                  Navigator.pushNamed(context, AppRoutesNames.home);
                   _controller.handleRegister();
                 },
               ),

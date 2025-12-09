@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/constants/apptheme.dart';
+import 'package:rokto/core/utils/apptheme.dart';
 
 class DonationRequestHeader extends StatelessWidget {
   const DonationRequestHeader({super.key});
@@ -25,7 +25,7 @@ class DonationRequestHeader extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: AppTheme.primaryColor,
+              color: AppColors.primaryColor
             ),
           ),
         ],

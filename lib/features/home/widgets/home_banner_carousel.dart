@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/constants/apptheme.dart';
 import '../models/banner_model.dart';
 
 class HomeBannerCarousel extends StatefulWidget {
@@ -49,7 +49,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
           effect: ExpandingDotsEffect(
             dotWidth: 8.w,
             dotHeight: 8.h,
-            activeDotColor: AppTheme.primaryColor,
+            activeDotColor: AppColors.primaryColor,
             dotColor: Colors.grey.shade300,
             expansionFactor: 3,
             spacing: 6.w,
