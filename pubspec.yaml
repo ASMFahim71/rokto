@@ -42,6 +42,7 @@ dependencies:
   riverpod_annotation: ^3.0.3
   riverpod_generator: ^3.0.3
   shared_preferences: ^2.5.3
+  fluttertoast: ^9.0.0
 
 dev_dependencies:
   flutter_test:

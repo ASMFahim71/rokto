@@ -7,6 +7,8 @@ import 'package:rokto/core/common_widgets/apptext_field.dart';
 import 'package:rokto/core/common_widgets/elevated_button.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/features/auth/register_screen/controller/register_controller.dart';
+import 'package:rokto/features/auth/register_screen/provider/register_notifier.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -16,8 +18,16 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  late RegisterNotifier _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = RegisterNotifier(ref: ref);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final regProvider = ref.watch(registerControllerProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -63,11 +73,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       children: [
                         TextSpan(
                           text: 'To ',
-                          style: TextStyle(color: AppColors.primaryTextColor),
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.primaryTextColor,
+                          ),
                         ),
                         TextSpan(
                           text: 'Donate',
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ],
                     ),
@@ -78,35 +94,37 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               SizedBox(height: 40.h),
 
               // Form Fields
-              const AppTextField(
-                hintText: 'ASM FAHIM',
+              AppTextField(
                 icon: Icons.person_outline,
+                labelText: "Your Name",
+                onChanged: (value) => ref
+                    .read(registerControllerProvider.notifier)
+                    .onNameChange(value),
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: 'asmfahim@nanitex.com',
+              AppTextField(
                 icon: Icons.email_outlined,
+                labelText: "Email",
+                onChanged: (value) => ref
+                    .read(registerControllerProvider.notifier)
+                    .onEmailChange(value),
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: '***********',
+              AppTextField(
                 icon: Icons.lock_outline,
                 obscureText: true,
+                labelText: "Password",
+                onChanged: (value) => ref
+                    .read(registerControllerProvider.notifier)
+                    .onPasswordChange(value),
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: '+8801722222222',
+              AppTextField(
                 icon: Icons.phone_outlined,
-              ),
-              SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: 'O+',
-                icon: Icons.bloodtype_outlined,
-              ),
-              SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: 'Chittagong, BD.',
-                icon: Icons.location_on_outlined,
+                labelText: "Phone Number",
+                onChanged: (value) => ref
+                    .read(registerControllerProvider.notifier)
+                    .onPhoneChange(value),
               ),
 
               SizedBox(height: 40.h),
@@ -115,7 +133,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               CustomElevatedButton(
                 text: 'REGISTER',
                 onPressed: () {
-                  // Handle Register Logic
+                  _controller.handleRegister();
                 },
               ),
 

@@ -3,17 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/utils/apptheme.dart';
 
 class AppTextField extends StatelessWidget {
-  final String hintText;
   final IconData icon;
   final bool obscureText;
   final TextEditingController? controller;
+  final String? labelText;
+  final Function(String)? onChanged;
 
   const AppTextField({
     super.key,
-    required this.hintText,
     required this.icon,
     this.obscureText = false,
     this.controller,
+    this.labelText,
+    this.onChanged,
   });
 
   @override
@@ -43,12 +45,12 @@ class AppTextField extends StatelessWidget {
             child: TextField(
               controller: controller,
               obscureText: obscureText,
+              onChanged: onChanged,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.primaryTextColor,
               ),
               decoration: InputDecoration(
-                hintText: hintText,
                 hintStyle: TextStyle(
                   fontSize: 14.sp,
                   color: AppColors.secondaryTextColor,
@@ -56,6 +58,11 @@ class AppTextField extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
                 isDense: true,
+                labelText: labelText,
+                labelStyle: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.primaryTextColor,
+                ),
               ),
             ),
           ),

@@ -50,13 +50,17 @@ class AuthLanding extends StatelessWidget {
                         TextSpan(
                           text: 'To ',
                           style: TextStyle(
+                            fontFamily: 'Poppins',
                             color:
                                 AppColors.primaryTextColor, // Black/Dark Grey
                           ),
                         ),
                         TextSpan(
                           text: 'Donate',
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ],
                     ),

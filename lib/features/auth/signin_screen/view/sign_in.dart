@@ -6,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common_widgets/apptext_field.dart';
 import 'package:rokto/core/common_widgets/elevated_button.dart';
 import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
+import 'package:rokto/features/auth/signin_screen/provider/signin_notifier.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -15,6 +17,13 @@ class SignInScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
+  late SigninNotifier _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = SigninNotifier(ref: ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +63,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     text: TextSpan(
                       text: 'Dare ',
                       style: TextStyle(
-                        fontFamily:
-                            'Poppins', // Re-asserting font family just in case
+                        fontFamily: 'Poppins',
                         fontSize: 24.sp,
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryColor,
@@ -63,11 +71,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       children: [
                         TextSpan(
                           text: 'To ',
-                          style: TextStyle(color: AppColors.primaryTextColor),
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.primaryTextColor,
+                          ),
                         ),
                         TextSpan(
                           text: 'Donate',
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ],
                     ),
@@ -78,15 +92,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               SizedBox(height: 60.h),
 
               // Form Fields
-              const AppTextField(
-                hintText: 'asmfahim@nanitex.com', // Placeholder from design
-                icon: Icons.email_outlined,
+              AppTextField(
+                icon: Icons.phone,
+                labelText: 'Phone',
+                onChanged: (value) => ref
+                    .read(sigininControllerProvider.notifier)
+                    .onPhoneChange(value),
               ),
               SizedBox(height: 16.h),
-              const AppTextField(
-                hintText: '***********',
+              AppTextField(
                 icon: Icons.lock_outline,
                 obscureText: true,
+                labelText: 'Password',
+                onChanged: (value) => ref
+                    .read(sigininControllerProvider.notifier)
+                    .onPasswordChange(value),
               ),
 
               SizedBox(height: 40.h),
@@ -95,7 +115,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               CustomElevatedButton(
                 text: 'LOG IN',
                 onPressed: () {
-                  // Handle Login Logic
+                  _controller.handleRegister();
                 },
               ),
 
@@ -103,9 +123,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
               // Forgot Password
               TextButton(
-                onPressed: () {
-                  // Handle Forgot Password
-                },
+                onPressed: () {},
                 child: Text(
                   'Forgot Password?',
                   style: TextStyle(
@@ -134,10 +152,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryColor,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigate to Register
-                        },
+                      recognizer: TapGestureRecognizer()..onTap = () {},
                     ),
                   ],
                 ),

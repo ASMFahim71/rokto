@@ -1,12 +1,12 @@
 class SigninState {
-  final String email;
+  final String phone;
   final String password;
 
-  SigninState({this.email = '', this.password = ''});
+  SigninState({this.phone = '', this.password = ''});
 
-  SigninState copyWith({String? email, String? password}) {
+  SigninState copyWith({String? phone, String? password}) {
     return SigninState(
-      email: email ?? this.email,
+      phone: phone ?? this.phone,
       password: password ?? this.password,
     );
   }

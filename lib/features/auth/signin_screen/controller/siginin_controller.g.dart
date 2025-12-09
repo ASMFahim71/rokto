@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_nav_screen.dart';
+part of 'siginin_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,52 @@ part of 'app_nav_screen.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(AppNavScreen)
-const appNavScreenProvider = AppNavScreenProvider._();
+@ProviderFor(SigininController)
+const sigininControllerProvider = SigininControllerProvider._();
 
-final class AppNavScreenProvider extends $NotifierProvider<AppNavScreen, int> {
-  const AppNavScreenProvider._()
+final class SigininControllerProvider
+    extends $NotifierProvider<SigininController, SigninState> {
+  const SigininControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'appNavScreenProvider',
+        name: r'sigininControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$appNavScreenHash();
+  String debugGetCreateSourceHash() => _$sigininControllerHash();
 
   @$internal
   @override
-  AppNavScreen create() => AppNavScreen();
+  SigininController create() => SigininController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(int value) {
+  Override overrideWithValue(SigninState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<int>(value),
+      providerOverride: $SyncValueProvider<SigninState>(value),
     );
   }
 }
 
-String _$appNavScreenHash() => r'a973e6bf980b6d43d20e91f8fec13a0686137955';
+String _$sigininControllerHash() => r'8727363471e42c59d2135cc0284f0f940cb8e3a3';
 
-abstract class _$AppNavScreen extends $Notifier<int> {
-  int build();
+abstract class _$SigininController extends $Notifier<SigninState> {
+  SigninState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<int, int>;
+    final ref = this.ref as $Ref<SigninState, SigninState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<int, int>,
-              int,
+              AnyNotifier<SigninState, SigninState>,
+              SigninState,
               Object?,
               Object?
             >;
