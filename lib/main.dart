@@ -1,8 +1,13 @@
-import 'package:bloodlagbe/features/splash_screen/splash_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
+import 'package:rokto/core/routes/routes.dart';
+import 'package:rokto/core/utils/app_style.dart';
+import 'package:rokto/features/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -10,6 +15,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const SplashScreen());
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.appThemeData,
+          initialRoute: AppRoutesNames.splashScreen,
+          onGenerateRoute: AppPages.generateRouteSettings,
+        );
+      },
+    );
   }
 }
