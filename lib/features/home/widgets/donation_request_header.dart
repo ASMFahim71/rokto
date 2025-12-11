@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
 
 class DonationRequestHeader extends StatelessWidget {
   const DonationRequestHeader({super.key});
@@ -20,12 +21,17 @@ class DonationRequestHeader extends StatelessWidget {
               color: Colors.black87,
             ),
           ),
-          Text(
-            'See All',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryColor
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutesNames.donationRequest);
+            },
+            child: Text(
+              'See All',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryColor,
+              ),
             ),
           ),
         ],

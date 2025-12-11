@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rokto/core/utils/apptheme.dart';
 import 'package:rokto/features/onboarding_screen/view/onboarding_screen.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

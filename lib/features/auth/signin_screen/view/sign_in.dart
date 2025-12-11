@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rokto/core/common_widgets/apptext_field.dart';
-import 'package:rokto/core/common_widgets/elevated_button.dart';
+import 'package:rokto/core/common/widgets/apptext_field.dart';
+import 'package:rokto/core/common/widgets/elevated_button.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
-import 'package:rokto/core/utils/apptheme.dart';
 import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
 import 'package:rokto/features/auth/signin_screen/provider/signin_notifier.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});

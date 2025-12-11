@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/core/common/utils/image_res.dart';
 import '../models/donation_request_model.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 
 class DonationRequestCard extends StatelessWidget {
   final DonationRequestModel request;
@@ -17,10 +19,12 @@ class DonationRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 140.h,
+      width: 374.w,
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(10.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.06),
@@ -63,24 +67,16 @@ class DonationRequestCard extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 48.w,
-                height: 48.h,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
+                width: 38.w,
+                height: 55.h,
                 child: Center(
-                  child: Text(
-                    request.bloodGroup,
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16.sp,
-                    ),
+                  child: SvgPicture.asset(
+                    ImageRes.bloodBPlus,
+                    
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 20.h),
               SizedBox(
                 height: 32.h,
                 child: ElevatedButton(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rokto/core/common/utils/image_res.dart';
+import 'package:rokto/core/common/widgets/app_popup.dart';
 import 'package:rokto/features/home/widgets/home_grid_button.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
 
 class GridMenu extends StatelessWidget {
   const GridMenu({super.key});
@@ -16,38 +18,48 @@ class GridMenu extends StatelessWidget {
         clipBehavior: Clip.none,
         crossAxisCount: 3,
         crossAxisSpacing: 16.w,
-        mainAxisSpacing: 20.h, 
-        childAspectRatio: 0.9, 
+        mainAxisSpacing: 20.h,
+        childAspectRatio: 0.9,
         children: [
           HomeGridButton(
-            icon: FeatherIcons.search,
+            icon: ImageRes.findDoner,
             label: 'Find Donors',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutesNames.findDonors);
+            },
           ),
           HomeGridButton(
-            icon: FeatherIcons.droplet,
+            icon: ImageRes.donate,
             label: 'Donate',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutesNames.donationRequest);
+            },
           ),
           HomeGridButton(
-            icon: Icons.bloodtype_outlined,
+            icon: ImageRes.orderBlood,
             label: 'Order Blood',
             onTap: () {},
           ),
           HomeGridButton(
-            icon: Icons.medical_services_outlined,
+            icon: ImageRes.assistant,
             label: 'Assistant',
-            onTap: () {},
+            onTap: () {
+              toastInfo("Not implemented yet");
+            },
           ),
           HomeGridButton(
-            icon: FeatherIcons.fileText,
+            icon: ImageRes.report,
             label: 'Report',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutesNames.report);
+            },
           ),
           HomeGridButton(
-            icon: FeatherIcons.mic,
+            icon: ImageRes.campaign,
             label: 'Campaign',
-            onTap: () {},
+            onTap: () {
+              toastInfo("Not implemented yet");
+            },
           ),
         ],
       ),

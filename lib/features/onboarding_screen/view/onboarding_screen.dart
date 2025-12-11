@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/utils/apptheme.dart';
 import 'package:rokto/features/onboarding_screen/provider/app_nav_screen.dart';
 import 'package:rokto/features/onboarding_screen/view/widgets/widgets.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final String text;
