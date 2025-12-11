@@ -12,7 +12,7 @@ class NavBar extends StatelessWidget {
     this.selectedIndex = 0,
     required this.onIndexChanged,
   });
-
+//check
   @override
   Widget build(BuildContext context) {
     return Container(
