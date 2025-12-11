@@ -34,7 +34,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
+          icon: Icon(
+            Icons.chevron_left_outlined,
+            color: AppColors.primaryColor,
+            size: 30.sp,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         scrolledUnderElevation: 0,
@@ -96,7 +100,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // Form Fields
               AppTextField(
                 icon: Icons.person_outline,
-                labelText: "Your Name",
+                labelText: "Full Name",
                 onChanged: (value) => ref
                     .read(registerControllerProvider.notifier)
                     .onNameChange(value),
@@ -111,6 +115,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               SizedBox(height: 16.h),
               AppTextField(
+                icon: Icons.phone_outlined,
+                labelText: "Phone Number",
+                onChanged: (value) => ref
+                    .read(registerControllerProvider.notifier)
+                    .onPhoneChange(value),
+              ),
+              SizedBox(height: 16.h),
+              AppTextField(
                 icon: Icons.lock_outline,
                 obscureText: true,
                 labelText: "Password",
@@ -120,11 +132,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               SizedBox(height: 16.h),
               AppTextField(
-                icon: Icons.phone_outlined,
-                labelText: "Phone Number",
+                icon: Icons.lock,
+                obscureText: true,
+                labelText: "Confirm Password",
                 onChanged: (value) => ref
                     .read(registerControllerProvider.notifier)
-                    .onPhoneChange(value),
+                    .onConfirmPasswordChange(value),
               ),
 
               SizedBox(height: 40.h),
@@ -132,6 +145,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // Register Button
               CustomElevatedButton(
                 text: 'REGISTER',
+                isLoading: regProvider.isLoading,
                 onPressed: () {
                   _controller.handleRegister();
                 },

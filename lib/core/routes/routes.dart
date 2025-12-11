@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/features/auth/auth_landing/auth_landing.dart';
+import 'package:rokto/features/auth/details_info/view/detail_info.dart';
 import 'package:rokto/features/auth/register_screen/view/register_screen.dart';
 import 'package:rokto/features/auth/signin_screen/view/sign_in.dart';
 import 'package:rokto/features/home/view/home_view.dart';
@@ -21,6 +22,7 @@ class AppPages {
       RouteEntity(path: AppRoutesNames.authLanding, page: const AuthLanding()),
       RouteEntity(path: AppRoutesNames.signIn, page: const SignInScreen()),
       RouteEntity(path: AppRoutesNames.register, page: const RegisterScreen()),
+      RouteEntity(path: AppRoutesNames.additonalInfo, page: const DetailInfo()),
       RouteEntity(path: AppRoutesNames.home, page: const HomeView()),
     ];
   }

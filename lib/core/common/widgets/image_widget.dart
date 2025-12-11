@@ -6,7 +6,7 @@ Widget appImagewithColor({
   String imagePath = '',
   double width = 16,
   double height = 16,
-  Color color = AppColors.primaryElement,
+  Color color = AppColors.primaryColor,
 }) {
   return Image.asset(imagePath, width: width.w, height: height.h, color: color);
 }

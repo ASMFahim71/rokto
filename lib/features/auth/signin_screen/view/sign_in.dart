@@ -33,7 +33,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
+          icon: Icon(
+            Icons.chevron_left_outlined,
+            color: AppColors.primaryColor,
+            size: 30.sp,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ),

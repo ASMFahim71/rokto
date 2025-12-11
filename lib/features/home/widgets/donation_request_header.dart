@@ -16,8 +16,8 @@ class DonationRequestHeader extends StatelessWidget {
             'Donation Request',
             style: TextStyle(
               fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+              color: AppColors.primaryTextColor,
             ),
           ),
           Text(
@@ -25,7 +25,7 @@ class DonationRequestHeader extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.primaryColor
+              color: AppColors.primaryColor,
             ),
           ),
         ],

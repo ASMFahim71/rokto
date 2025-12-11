@@ -26,4 +26,12 @@ class RegisterController extends _$RegisterController {
   void onPasswordChange(String password) {
     state = state.copyWith(password: password);
   }
+
+  void onConfirmPasswordChange(String confirmPassword) {
+    state = state.copyWith(confirmPassword: confirmPassword);
+  }
+
+  void setLoading(bool isLoading) {
+    state = state.copyWith(isLoading: isLoading);
+  }
 }

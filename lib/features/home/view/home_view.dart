@@ -7,7 +7,7 @@ import 'package:rokto/features/home/widgets/donation_request_header.dart';
 import 'package:rokto/features/home/widgets/grid_menu.dart';
 import '../controller/home_controller.dart';
 import '../widgets/home_banner_carousel.dart';
-import '../widgets/donation_request_card.dart'; 
+import '../widgets/donation_request_card.dart';
 import '../../../core/common/widgets/text_widgets.dart';
 import '../../../core/common/utils/app_color.dart';
 
@@ -20,7 +20,7 @@ class HomeView extends ConsumerWidget {
     final donationRequestAsync = ref.watch(donationRequestProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.primarySecondaryBackground,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -40,16 +40,16 @@ class HomeView extends ConsumerWidget {
                       ),
                       SizedBox(height: 4.h),
                       text24Normal(
-                        text:'Ahsanul', // Placeholder or use user name
+                        text: 'Ahsanul', // Placeholder or use user name
                         color: AppColors.primaryText,
                         fontWeight: FontWeight.bold,
                       ),
                     ],
                   ),
                   const UserImage(),
-                  ],
-                ),
+                ],
               ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: 20.h),
@@ -82,7 +82,7 @@ class HomeView extends ConsumerWidget {
                     const GridMenu(),
                     SizedBox(height: 32.h),
                     // 3. Donation Request Header
-                    const DonationRequestHeader(),  
+                    const DonationRequestHeader(),
                     SizedBox(height: 16.h),
                     // 4. Donation Request Card
                     Padding(
