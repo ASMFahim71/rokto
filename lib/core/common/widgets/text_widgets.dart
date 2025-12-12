@@ -12,7 +12,17 @@ Widget text24Normal({
     style: TextStyle(color: color, fontSize: 20.sp, fontWeight: fontWeight),
   );
 }
-
+Widget text22Normal({
+  String text = '',
+  Color color = AppColors.primaryTextColor,
+  FontWeight fontWeight = FontWeight.normal,
+}) {
+  return Text(
+    textAlign: TextAlign.center,
+    text,
+    style: TextStyle(color: color, fontSize: 22.sp, fontWeight: fontWeight),
+  );
+}
 class Text16Normal extends StatelessWidget {
   final String text;
   final Color color;

@@ -10,6 +10,8 @@ import 'package:rokto/features/find_doners/view/find_donors_screen.dart';
 import 'package:rokto/features/search_nav_bar/view/widgets/search_screen.dart';
 import 'package:rokto/features/donation_request/view/donation_request_screen.dart';
 import 'package:rokto/features/report/view/report_screen.dart';
+import 'package:rokto/features/profile/view/profile_screen.dart';
+import 'package:rokto/features/create_request/view/create_request_screen.dart';
 
 class AppPages {
   static List<RouteEntity> routes() {
@@ -26,10 +28,24 @@ class AppPages {
       RouteEntity(path: AppRoutesNames.signIn, page: const SignInScreen()),
       RouteEntity(path: AppRoutesNames.register, page: const RegisterScreen()),
       RouteEntity(path: AppRoutesNames.home, page: const HomeView()),
-      RouteEntity(path: AppRoutesNames.findDonors, page: const FindDonorsScreen(),),
+      RouteEntity(
+        path: AppRoutesNames.findDonors,
+        page: const FindDonorsScreen(),
+      ),
       RouteEntity(path: AppRoutesNames.search, page: const SearchScreen()),
-      RouteEntity(path: AppRoutesNames.donationRequest, page: const DonationRequestScreen(),),
+      RouteEntity(
+        path: AppRoutesNames.donationRequest,
+        page: const DonationRequestScreen(),
+      ),
       RouteEntity(path: AppRoutesNames.report, page: const ReportScreen()),
+      RouteEntity(
+        path: AppRoutesNames.profileScreen,
+        page: const ProfileScreen(),
+      ),
+      RouteEntity(
+        path: AppRoutesNames.createRequest,
+        page: const CreateRequestScreen(),
+      ),
     ];
   }
 

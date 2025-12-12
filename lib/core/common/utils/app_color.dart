@@ -18,6 +18,7 @@ class AppColors {
   static const Color textSecondary = Color(0xFF7E7E7E);
   static const Color iconGray = Color(0xFF9E9E9E);
   static const Color shadowColor = Color(0x0A000000);
+  static const Color tealColor = Color(0xFF6F9A9A);
   /// grey background
   static const Color primarySecondaryBackground = Color.fromARGB(255,247,247,249,);
 

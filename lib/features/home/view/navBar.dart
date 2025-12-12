@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
 
 class NavBar extends StatelessWidget {
   final int selectedIndex;
@@ -12,11 +13,11 @@ class NavBar extends StatelessWidget {
     this.selectedIndex = 0,
     required this.onIndexChanged,
   });
-//check
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70.h, // Increased height for painter area
+      height: 60.h, // Adjusted to match painter height for alignment
       margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
       color: Colors.transparent,
       child: Stack(
@@ -40,40 +41,52 @@ class NavBar extends StatelessWidget {
                   _buildNavItem(
                     ImageRes.searchIcon,
                     isActive: selectedIndex == 1,
-                    onTap: () => onIndexChanged(1),
+                    onTap: (){
+                      onIndexChanged(1);
+                      Navigator.pushNamed(context, AppRoutesNames.search);
+                    },
                   ),
                   SizedBox(width: 48.w), // Space for center button
                   _buildNavItem(
                     ImageRes.spike,
                     isActive: selectedIndex == 3,
-                    onTap: () => onIndexChanged(3),
+                    onTap: (){
+                      onIndexChanged(3);
+                      Navigator.pushNamed(context, AppRoutesNames.donationRequest);
+                    },
                   ),
                   _buildNavItem(
                     ImageRes.profile,
                     isActive: selectedIndex == 4,
-                    onTap: () => onIndexChanged(4),
+                    onTap: () {
+                      onIndexChanged(4);
+                      Navigator.pushNamed(context, AppRoutesNames.profileScreen);
+                    },
                   ),
                 ],
               ),
             ),
           ),
           Positioned(
-            top: -24.h,
+            top: -28.h, // Adjusted to sit perfectly in the notch
             child: GestureDetector(
-              onTap: () => onIndexChanged(2),
+              onTap: (){
+                onIndexChanged(2);
+                Navigator.pushNamed(context, AppRoutesNames.createRequest);
+              },
               child: Container(
-                width: 64.w,
-                height: 64.w,
-                padding: EdgeInsets.all(16.w),
+                width: 56.w,
+                height: 56.w,
+                padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 5.w),
+                  border: Border.all(color: Colors.white, width: 4.w),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primaryColor.withOpacity(0.3),
-                      blurRadius: 10,
-                      spreadRadius: 2,
+                      color: AppColors.primaryColor.withOpacity(0.4),
+                      blurRadius: 15,
+                      spreadRadius: 5,
                       offset: const Offset(0, 5),
                     ),
                   ],
@@ -133,7 +146,7 @@ class NavBarPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     Paint shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.05)
+      ..color = Colors.black.withOpacity(0.1)
       ..style = PaintingStyle.fill
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
 
@@ -141,54 +154,54 @@ class NavBarPainter extends CustomPainter {
     double w = size.width;
     double h = size.height;
     double center = w / 2;
-    double curveW = 60.0;
 
-    // Starting point
-    path.moveTo(0, h * 0.4); // Start below the curve for top-left
+    // Config for smooth notch
+    double guestRadius = 35.0; // The radius of the hole
 
-    // Top-Left Corner
+    path.moveTo(0, h * 0.4);
     path.quadraticBezierTo(0, 0, 30, 0);
 
-    // Line to start of curve
-    path.lineTo(center - curveW, 0);
+    // Notch Logic
+    double r = guestRadius;
 
-    // Curve (Notch)
-    // Bezier curve to create a dip
+    path.lineTo(center - (r * 2), 0);
+
+    // Left curve down
     path.cubicTo(
-      center - 40,
-      0, // Control point 1
-      center - 30,
-      35, // Control point 2 (Dip depth)
-      center,
-      35, // End point (Bottom of dip)
-    );
-    path.cubicTo(
-      center + 30,
-      35, // Control point 1
-      center + 40,
-      0, // Control point 2
-      center + curveW,
-      0, // End point
+      center - r - (r * 0.5),
+      0,
+      center - r - (r * 0.1),
+      0,
+      center - r,
+      r * 0.3,
     );
 
-    // Line to right corner
+    // Bottom arc
+    path.cubicTo(
+      center - r * 0.6,
+      r * 1.1, // Control point 1
+      center + r * 0.6,
+      r * 1.1, // Control point 2
+      center + r,
+      r * 0.3, // End point
+    );
+
+    // Right curve up
+    path.cubicTo(
+      center + r + (r * 0.1),
+      0,
+      center + r + (r * 0.5),
+      0,
+      center + (r * 2),
+      0,
+    );
+
     path.lineTo(w - 30, 0);
-
-    // Top-Right Corner
     path.quadraticBezierTo(w, 0, w, h * 0.4);
-
-    // Right Side
     path.lineTo(w, h - 30);
-
-    // Bottom-Right Corner
     path.quadraticBezierTo(w, h, w - 30, h);
-
-    // Bottom Side
     path.lineTo(30, h);
-
-    // Bottom-Left Corner
     path.quadraticBezierTo(0, h, 0, h - 30);
-
     path.close();
 
     canvas.drawPath(path, shadowPaint);

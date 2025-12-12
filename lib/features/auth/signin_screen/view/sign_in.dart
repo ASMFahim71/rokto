@@ -9,6 +9,7 @@ import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
 import 'package:rokto/features/auth/signin_screen/provider/signin_notifier.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -116,6 +117,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               CustomElevatedButton(
                 text: 'LOG IN',
                 onPressed: () {
+                  // TODO: Use actual token from API response
+                  StorageService().setLoggedIn("demo_token");
                   Navigator.pushNamed(context, AppRoutesNames.home);
                   _controller.handleRegister();
                 },

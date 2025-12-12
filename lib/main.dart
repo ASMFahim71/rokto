@@ -5,7 +5,11 @@ import 'package:rokto/core/routes/routes.dart';
 import 'package:rokto/core/common/utils/app_style.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'package:rokto/core/common/utils/storage_service.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageService().init();
   runApp(const ProviderScope(child: MyApp()));
 }
 
