@@ -1,47 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common_widgets/elevated_button.dart';
 import 'package:rokto/core/utils/apptheme.dart';
 
-class DetailInfo extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rokto/core/models/address_models.dart';
+import 'package:rokto/features/auth/details_info/provider/address_provider.dart';
+import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
+
+class DetailInfo extends ConsumerStatefulWidget {
   const DetailInfo({super.key});
 
   @override
-  State<DetailInfo> createState() => _DetailInfoState();
+  ConsumerState<DetailInfo> createState() => _DetailInfoState();
 }
 
-class _DetailInfoState extends State<DetailInfo> {
-  String? selectedDivision;
-  String? selectedDistrict;
-  String? selectedUpazila;
+class _DetailInfoState extends ConsumerState<DetailInfo> {
+  Division? selectedDivision;
+  District? selectedDistrict;
+  Upazila? selectedUpazila;
   String? selectedBloodGroup;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _optionalController = TextEditingController();
 
-  final List<String> divisions = [
-    'Dhaka',
-    'Chittagong',
-    'Rajshahi',
-    'Khulna',
-    'Barisal',
-    'Sylhet',
-    'Rangpur',
-    'Mymensingh',
-  ];
-  final List<String> districts = [
-    'Dhaka',
-    'Chittagong',
-    'Cumilla',
-    'Feni',
-    'Gazipur',
-    'Narayanganj',
-  ]; // Dummy data
-  final List<String> upazilas = [
-    'Savar',
-    'Mirpur',
-    'Hathazari',
-    'Raozan',
-  ]; // Dummy data
   final List<String> bloodGroups = [
     'A+',
     'A-',
@@ -53,18 +35,71 @@ class _DetailInfoState extends State<DetailInfo> {
     'O-',
   ];
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  void _selectDate(BuildContext context) {
+    DateTime tempPickedDate = DateTime.now();
+    showModalBottomSheet(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (BuildContext builder) {
+        return Container(
+          height: 300.h,
+          padding: EdgeInsets.only(top: 6.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CupertinoButton(
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  CupertinoButton(
+                    child: Text(
+                      'Done',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor,
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _dateController.text = "${tempPickedDate.toLocal()}"
+                            .split(' ')[0];
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: DateTime.now(),
+                  minimumDate: DateTime(1900),
+                  maximumDate: DateTime.now(),
+                  onDateTimeChanged: (DateTime newDate) {
+                    tempPickedDate = newDate;
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
-    if (picked != null) {
-      setState(() {
-        _dateController.text = "${picked.toLocal()}".split(' ')[0];
-      });
-    }
   }
 
   @override
@@ -106,26 +141,185 @@ class _DetailInfoState extends State<DetailInfo> {
                 ),
               ),
               SizedBox(height: 10.h),
-              _buildDropdown(
-                'Division',
-                divisions,
-                selectedDivision,
-                (val) => setState(() => selectedDivision = val),
-              ),
+
+              // Division Dropdown
+              // Division Dropdown
+              ref
+                  .watch(divisionListProvider)
+                  .when(
+                    data: (divisions) => SelectionField<Division>(
+                      label: 'Division',
+                      value: selectedDivision,
+                      items: divisions,
+                      getLabel: (item) => item.name,
+                      isLoading: false,
+                      hasError: false,
+                      onRetry: () => ref.refresh(divisionListProvider),
+                      onRefresh: () => ref.refresh(divisionListProvider),
+                      onChanged: (val) {
+                        setState(() {
+                          if (selectedDivision != val) {
+                            selectedDivision = val;
+                            selectedDistrict = null;
+                            selectedUpazila = null;
+                          }
+                        });
+                      },
+                    ),
+                    loading: () => SelectionField<Division>(
+                      label: 'Division',
+                      value: null,
+                      items: [],
+                      getLabel: (item) => '',
+                      isLoading: true,
+                      hasError: false,
+                      onRetry: () {},
+                      onRefresh: () {},
+                      onChanged: (_) {},
+                    ),
+                    error: (err, stack) => SelectionField<Division>(
+                      label: 'Division',
+                      value: null,
+                      items: [],
+                      getLabel: (item) => '',
+                      isLoading: false,
+                      hasError: true,
+                      onRetry: () => ref.refresh(divisionListProvider),
+                      onRefresh: () {},
+                      onChanged: (_) {},
+                    ),
+                  ),
+
               SizedBox(height: 16.h),
-              _buildDropdown(
-                'District',
-                districts,
-                selectedDistrict,
-                (val) => setState(() => selectedDistrict = val),
-              ),
+
+              // District Dropdown
+              if (selectedDivision != null)
+                ref
+                    .watch(districtListProvider(selectedDivision!.id))
+                    .when(
+                      data: (districts) => SelectionField<District>(
+                        label: 'District',
+                        value: selectedDistrict,
+                        items: districts,
+                        getLabel: (item) => item.name,
+                        isLoading: false,
+                        hasError: false,
+                        onRetry: () => ref.refresh(
+                          districtListProvider(selectedDivision!.id),
+                        ),
+                        onRefresh: () => ref.refresh(
+                          districtListProvider(selectedDivision!.id),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if (selectedDistrict != val) {
+                              selectedDistrict = val;
+                              selectedUpazila = null;
+                            }
+                          });
+                        },
+                      ),
+                      loading: () => SelectionField<District>(
+                        label: 'District',
+                        value: null,
+                        items: [],
+                        getLabel: (item) => '',
+                        isLoading: true,
+                        hasError: false,
+                        onRetry: () {},
+                        onRefresh: () {},
+                        onChanged: (_) {},
+                      ),
+                      error: (err, stack) => SelectionField<District>(
+                        label: 'District',
+                        value: null,
+                        items: [],
+                        getLabel: (item) => '',
+                        isLoading: false,
+                        hasError: true,
+                        onRetry: () => ref.refresh(
+                          districtListProvider(selectedDivision!.id),
+                        ),
+                        onRefresh: () {},
+                        onChanged: (_) {},
+                      ),
+                    )
+              else
+                SelectionField<District>(
+                  label: 'District',
+                  value: null,
+                  items: [],
+                  getLabel: (item) => '',
+                  isLoading: false,
+                  hasError: false,
+                  onRetry: () {},
+                  onRefresh: () {},
+                  onChanged: (_) {},
+                ),
+
               SizedBox(height: 16.h),
-              _buildDropdown(
-                'Upazila',
-                upazilas,
-                selectedUpazila,
-                (val) => setState(() => selectedUpazila = val),
-              ),
+
+              // Upazila Dropdown
+              if (selectedDistrict != null)
+                ref
+                    .watch(upazilaListProvider(selectedDistrict!.id))
+                    .when(
+                      data: (upazilas) => SelectionField<Upazila>(
+                        label: 'Upazila',
+                        value: selectedUpazila,
+                        items: upazilas,
+                        getLabel: (item) => item.name,
+                        isLoading: false,
+                        hasError: false,
+                        onRetry: () => ref.refresh(
+                          upazilaListProvider(selectedDistrict!.id),
+                        ),
+                        onRefresh: () => ref.refresh(
+                          upazilaListProvider(selectedDistrict!.id),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            selectedUpazila = val;
+                          });
+                        },
+                      ),
+                      loading: () => SelectionField<Upazila>(
+                        label: 'Upazila',
+                        value: null,
+                        items: [],
+                        getLabel: (item) => '',
+                        isLoading: true,
+                        hasError: false,
+                        onRetry: () {},
+                        onRefresh: () {},
+                        onChanged: (_) {},
+                      ),
+                      error: (err, stack) => SelectionField<Upazila>(
+                        label: 'Upazila',
+                        value: null,
+                        items: [],
+                        getLabel: (item) => '',
+                        isLoading: false,
+                        hasError: true,
+                        onRetry: () => ref.refresh(
+                          upazilaListProvider(selectedDistrict!.id),
+                        ),
+                        onRefresh: () {},
+                        onChanged: (_) {},
+                      ),
+                    )
+              else
+                SelectionField<Upazila>(
+                  label: 'Upazila',
+                  value: null,
+                  items: [],
+                  getLabel: (item) => '',
+                  isLoading: false,
+                  hasError: false,
+                  onRetry: () {},
+                  onRefresh: () {},
+                  onChanged: (_) {},
+                ),
 
               SizedBox(height: 24.h),
 
@@ -139,7 +333,15 @@ class _DetailInfoState extends State<DetailInfo> {
                 ),
               ),
               SizedBox(height: 12.h),
-              _buildBloodGroupSelector(),
+              BloodGroupSelector(
+                selectedBloodGroup: selectedBloodGroup,
+                bloodGroups: bloodGroups,
+                onSelected: (val) {
+                  setState(() {
+                    selectedBloodGroup = val;
+                  });
+                },
+              ),
 
               SizedBox(height: 24.h),
 
@@ -149,7 +351,7 @@ class _DetailInfoState extends State<DetailInfo> {
                 readOnly: true,
                 onTap: () => _selectDate(context),
                 style: TextStyle(fontSize: 14.sp),
-                decoration: _inputDecoration(
+                decoration: buildInputDecoration(
                   'Last Donate Date',
                   suffixIcon: const Icon(
                     Icons.calendar_today,
@@ -163,10 +365,10 @@ class _DetailInfoState extends State<DetailInfo> {
               // Optional Details
               TextFormField(
                 controller: _optionalController,
-                maxLines: 4,
+                maxLines: 1,
                 style: TextStyle(fontSize: 14.sp),
-                decoration: _inputDecoration(
-                  'Optional Details',
+                decoration: buildInputDecoration(
+                  'Your Area',
                   alignLabelWithHint: true,
                 ),
               ),
@@ -183,104 +385,6 @@ class _DetailInfoState extends State<DetailInfo> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBloodGroupSelector() {
-    return Wrap(
-      spacing: 12.w,
-      runSpacing: 12.h,
-      children: bloodGroups.map((bg) {
-        final isSelected = selectedBloodGroup == bg;
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedBloodGroup = bg;
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? AppColors.primaryColor
-                  : const Color(0xFFF4F5F7),
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Text(
-              bg,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : AppColors.primaryTextColor,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildDropdown(
-    String hint,
-    List<String> items,
-    String? value,
-    ValueChanged<String?> onChanged,
-  ) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      dropdownColor: Colors.white,
-      borderRadius: BorderRadius.circular(12.r),
-      elevation: 4,
-      items: items.map((String item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: AppColors.primaryTextColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        );
-      }).toList(),
-      onChanged: onChanged,
-      icon: const Icon(
-        Icons.keyboard_arrow_down,
-        color: AppColors.secondaryTextColor,
-      ),
-      decoration: _inputDecoration(hint),
-    );
-  }
-
-  InputDecoration _inputDecoration(
-    String label, {
-    Widget? suffixIcon,
-    bool alignLabelWithHint = false,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: TextStyle(
-        fontSize: 14.sp,
-        color: AppColors.secondaryTextColor,
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      suffixIcon: suffixIcon,
-      alignLabelWithHint: alignLabelWithHint,
-      filled: true,
-      fillColor: Colors.white,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
       ),
     );
   }
