@@ -2,14 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/routes/routes.dart';
-import 'package:rokto/core/utils/app_style.dart';
-import 'package:rokto/features/splash_screen/splash_screen.dart';
+import 'package:rokto/core/common/utils/app_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'features/home/view/home_view.dart';
 
-void main() {
+import 'package:rokto/core/common/utils/storage_service.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageService().init();
   runApp(const ProviderScope(child: MyApp()));
 }
 

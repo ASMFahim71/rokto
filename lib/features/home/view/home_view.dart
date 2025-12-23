@@ -109,7 +109,17 @@ class HomeView extends ConsumerWidget {
         ),
       ),
       extendBody: true,
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: NavBar(
+        selectedIndex: 0,
+        onIndexChanged: (index) {
+          if (index == 1) {
+            Navigator.pushNamed(context, '/search');
+          } else if (index != 0) {
+            // TODO: Navigate to other screens (Activity, Profile, etc.)
+            print('Navigate to index $index');
+          }
+        },
+      ),
     );
   }
 }

@@ -6,4 +6,11 @@ class AppRoutesNames {
   static const String register = '/register';
   static const String home = '/home';
   static const String additonalInfo = '/additionalinfo';
+  static const String notification = '/notification';
+  static const String findDonors = '/find_donors';
+  static const String search = '/search';
+  static const String donationRequest = '/donation_request';
+  static const String report = '/report';
+  static const String profileScreen = '/profile_screen';
+  static const String createRequest = '/create_request';
 }

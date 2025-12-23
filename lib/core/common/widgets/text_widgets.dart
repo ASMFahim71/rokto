@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/app_color.dart';
 Widget text24Normal({
   String text = '',
-  Color color = AppColors.primaryText,
+  Color color = AppColors.primaryTextColor,
   FontWeight fontWeight = FontWeight.normal,
 }) {
   return Text(
@@ -12,7 +12,17 @@ Widget text24Normal({
     style: TextStyle(color: color, fontSize: 20.sp, fontWeight: fontWeight),
   );
 }
-
+Widget text22Normal({
+  String text = '',
+  Color color = AppColors.primaryTextColor,
+  FontWeight fontWeight = FontWeight.normal,
+}) {
+  return Text(
+    textAlign: TextAlign.center,
+    text,
+    style: TextStyle(color: color, fontSize: 22.sp, fontWeight: fontWeight),
+  );
+}
 class Text16Normal extends StatelessWidget {
   final String text;
   final Color color;
@@ -69,9 +79,9 @@ Widget textUnderline({String text = '', VoidCallback? onTap}) {
     child: Text(
       text,
       style: TextStyle(
-        color: AppColors.primaryText,
+        color: AppColors.primaryTextColor,
         decoration: TextDecoration.underline,
-        decorationColor: AppColors.primaryText,
+        decorationColor: AppColors.primaryTextColor,
         decorationThickness: 2,
         decorationStyle: TextDecorationStyle.solid,
         fontSize: 14.sp,
