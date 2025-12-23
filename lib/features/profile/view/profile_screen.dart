@@ -28,8 +28,8 @@ class ProfileScreen extends ConsumerWidget {
               // Profile Image
               Center(
                 child: Container(
-                  width: 103.w,
-                  height: 103.h,
+                  width: 80.w,
+                  height: 80.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
                     image: DecorationImage(
@@ -47,8 +47,10 @@ class ProfileScreen extends ConsumerWidget {
               UserLocation(),
               SizedBox(height: 24.h),
               // Action Buttons
-              SizedBox(
-                height: 52.h,
+              Container(
+                height: 50.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                //  color: Colors.amber,
                 child: Row(
                   children: [
                     Expanded(
@@ -198,6 +200,7 @@ class ProfileScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

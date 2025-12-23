@@ -4,7 +4,7 @@ import 'package:rokto/features/auth/auth_landing/auth_landing.dart';
 import 'package:rokto/features/auth/details_info/view/detail_info.dart';
 import 'package:rokto/features/auth/register_screen/view/register_screen.dart';
 import 'package:rokto/features/auth/signin_screen/view/sign_in.dart';
-import 'package:rokto/features/home/view/home_view.dart';
+import 'package:rokto/features/dashboard/view/dashboard_view.dart';
 import 'package:rokto/features/onboarding_screen/view/onboarding_screen.dart';
 import 'package:rokto/features/splash_screen/splash_screen.dart';
 import 'package:rokto/features/find_doners/view/find_donors_screen.dart';
@@ -29,7 +29,7 @@ class AppPages {
       RouteEntity(path: AppRoutesNames.signIn, page: const SignInScreen()),
       RouteEntity(path: AppRoutesNames.register, page: const RegisterScreen()),
       RouteEntity(path: AppRoutesNames.additonalInfo, page: const DetailInfo()),
-      RouteEntity(path: AppRoutesNames.home, page: const HomeView()),
+      RouteEntity(path: AppRoutesNames.home, page: const DashboardView()),
       RouteEntity(
         path: AppRoutesNames.findDonors,
         page: const FindDonorsScreen(),

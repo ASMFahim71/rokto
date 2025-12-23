@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/common_widgets/elevated_button.dart';
-import 'package:rokto/core/utils/apptheme.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/widgets/bloodtype.dart';
+import 'package:rokto/core/common/widgets/elevated_button.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rokto/core/models/address_models.dart';

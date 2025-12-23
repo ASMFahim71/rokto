@@ -17,7 +17,12 @@ class DonationRequestScreen extends ConsumerWidget {
       backgroundColor: AppColors.primaryBackground,
       appBar: buildGlobalAppBar(title: "Donation Request"),
       body: ListView.separated(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.only(
+          left: 20.w,
+          right: 20.w,
+          top: 20.h,
+          bottom: 100.h,
+        ),
         itemCount: requests.length,
         itemBuilder: (context, index) {
           final request = requests[index];
