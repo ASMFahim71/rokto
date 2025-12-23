@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/banner_model.dart';
 
@@ -42,18 +41,24 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
             },
           ),
         ),
-        SizedBox(height: 16.h),
-        AnimatedSmoothIndicator(
-          activeIndex: _activeIndex,
-          count: widget.banners.length,
-          effect: ExpandingDotsEffect(
-            dotWidth: 8.w,
-            dotHeight: 8.h,
-            activeDotColor: AppColors.primaryColor,
-            dotColor: Colors.grey.shade300,
-            expansionFactor: 3,
-            spacing: 6.w,
-          ),
+        SizedBox(height: 8.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.banners.length, (dotIndex) {
+            return AnimatedContainer(
+              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 300),
+              margin: EdgeInsets.only(right: 6.w),
+              height: 5.h,
+              width: _activeIndex == dotIndex ? 30.w : 8.h,
+              decoration: BoxDecoration(
+                color: _activeIndex == dotIndex
+                    ? AppColors.primaryColor
+                    : Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            );
+          }),
         ),
       ],
     );
@@ -96,29 +101,6 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
                 ),
               ),
             ),
-
-            // Text Content (Optional based on design, but good for accessibility/fallback)
-            /*
-            Positioned(
-              bottom: 16.h,
-              left: 16.w,
-              right: 16.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    banner.title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            */
           ],
         ),
       ),

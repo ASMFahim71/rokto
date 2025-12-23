@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
-import 'package:rokto/core/routes/app_routes_names.dart';
 
 class NavBar extends StatelessWidget {
   final int selectedIndex;
@@ -21,6 +21,7 @@ class NavBar extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
       color: Colors.transparent,
       child: Stack(
+        fit: StackFit.expand,
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
@@ -28,7 +29,7 @@ class NavBar extends StatelessWidget {
             size: Size(double.infinity, 60.h),
             painter: NavBarPainter(),
             child: Container(
-              height: 60.h,
+              // height: 60.h,
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,57 +42,33 @@ class NavBar extends StatelessWidget {
                   _buildNavItem(
                     ImageRes.searchIcon,
                     isActive: selectedIndex == 1,
-                    onTap: (){
-                      onIndexChanged(1);
-                      Navigator.pushNamed(context, AppRoutesNames.search);
-                    },
+                    onTap: () => onIndexChanged(1),
                   ),
                   SizedBox(width: 48.w), // Space for center button
                   _buildNavItem(
                     ImageRes.spike,
                     isActive: selectedIndex == 3,
-                    onTap: (){
-                      onIndexChanged(3);
-                      Navigator.pushNamed(context, AppRoutesNames.donationRequest);
-                    },
+                    onTap: () => onIndexChanged(3),
                   ),
                   _buildNavItem(
                     ImageRes.profile,
                     isActive: selectedIndex == 4,
-                    onTap: () {
-                      onIndexChanged(4);
-                      Navigator.pushNamed(context, AppRoutesNames.profileScreen);
-                    },
+                    onTap: () => onIndexChanged(4),
                   ),
                 ],
               ),
             ),
           ),
           Positioned(
-            top: -28.h, // Adjusted to sit perfectly in the notch
+            top: -70.h, // Adjusted to sit perfectly in the notch10
+            bottom: 10.h,
             child: GestureDetector(
-              onTap: (){
-                onIndexChanged(2);
-                Navigator.pushNamed(context, AppRoutesNames.createRequest);
-              },
-              child: Container(
-                width: 56.w,
-                height: 56.w,
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 4.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryColor.withOpacity(0.4),
-                      blurRadius: 15,
-                      spreadRadius: 5,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Image.asset(ImageRes.drop, color: Colors.white),
+              onTap: () => onIndexChanged(2),
+              child: SizedBox(
+                height: 100.h,
+                width: 130.w,
+                //color: Colors.amber,
+                child: SvgPicture.asset(ImageRes.drop),
               ),
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:rokto/core/common/utils/constants.dart';
 class OrderRepo {
   final Dio _dio = Dio();
   // TODO: Replace with your actual backend base URL
-  final String baseUrl = AppConstants.baseUrl;
+  final String baseUrl = AppConstants.SERVER_API_URL;
 
   Future<bool> createOrder(Order order) async {
     try {

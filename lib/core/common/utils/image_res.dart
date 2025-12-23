@@ -28,11 +28,12 @@ class ImageRes {
   static const String bloodOMinus = "${_iconPath}O-.png";
   static const String bloodBMinus = "${_iconPath}B-.png";
   static const String homeIcon = "${_iconPath}home.png";
-  static const String drop="${_iconPath}drop.png";
-  static const String callIcon="${_iconPath}call.png";
-  static const String requestIcon="${_iconPath}share.png";
-  static const String logout="${_iconPath}signout.png";
-  static const String message="${_iconPath}message.png";
-  static const String help="${_iconPath}help.png";
-  static const String calendar="${_iconPath}calendar.png";
+  // static const String drop="${_iconPath}drop.png";
+  static const String callIcon = "${_iconPath}call.png";
+  static const String requestIcon = "${_iconPath}share.png";
+  static const String logout = "${_iconPath}signout.png";
+  static const String message = "${_iconPath}message.png";
+  static const String help = "${_iconPath}help.png";
+  static const String calendar = "${_iconPath}calendar.png";
+  static const String drop = "${_iconPath}bdroop.svg";
 }

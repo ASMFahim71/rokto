@@ -141,7 +141,12 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
       backgroundColor: AppColors.primaryBackground,
       appBar: buildGlobalAppBar(title: "Create A Request"),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+        padding: EdgeInsets.only(
+          left: 20.w,
+          right: 20.w,
+          top: 20.h,
+          bottom: 120.h,
+        ),
         child: Column(
           children: [
             RequestDropdown(
@@ -191,7 +196,6 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
             // District Autocomplete
             Consumer(
               builder: (context, ref, child) {
-
                 return RequestAutocomplete(
                   controller: _districtController,
                   hintText: "District",
@@ -262,7 +266,7 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
               keyboardType: TextInputType.phone,
             ),
 
-            SizedBox(height: 50.h),
+            SizedBox(height: 20.h),
             CustomElevatedButton(
               text: "Request",
               onPressed: () {
