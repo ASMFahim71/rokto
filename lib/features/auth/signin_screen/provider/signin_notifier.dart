@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rokto/core/common_widgets/app_popup.dart';
+import 'package:rokto/core/common/widgets/app_popup.dart';
 import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
 
 class SigninNotifier {

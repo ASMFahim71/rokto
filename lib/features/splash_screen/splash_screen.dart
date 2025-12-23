@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rokto/core/utils/apptheme.dart';
 import 'package:rokto/features/onboarding_screen/view/onboarding_screen.dart';
+import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -50,12 +51,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 .animate(
                   onComplete: (controller) {
                     if (mounted) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OnboardingScreen(),
-                        ),
-                      );
+                      bool isLoggedIn = StorageService().isLoggedIn();
+                      if (isLoggedIn) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OnboardingScreen(),
+                          ),
+                        );
+                      }
                     }
                   },
                 )

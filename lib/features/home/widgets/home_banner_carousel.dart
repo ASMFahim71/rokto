@@ -30,7 +30,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
             return _buildBannerImage(banner);
           },
           options: CarouselOptions(
-            height: 180.h,
+            height: 120.h,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 4),
             viewportFraction: 0.92,
