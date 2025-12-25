@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/widgets/address_selector.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/core/common/widgets/bloodtype.dart';
 import 'package:rokto/core/common/widgets/elevated_button.dart';
@@ -9,6 +10,7 @@ import '../../controller/search_controller.dart';
 import 'search_input.dart';
 import 'filter_section_header.dart';
 import 'filter_tile.dart';
+import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
 
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
@@ -65,24 +67,18 @@ class SearchScreen extends ConsumerWidget {
                             onSelected: controller.toggleBloodGroup,
                           ),
                           SizedBox(height: 16.h),
-                          FilterTile(
+
+                          AddressSelector(
                             title: 'Location',
-                            onTap: () {
-                              // Navigate or expand
-                            },
+                            selectedDivision: controller.filters.division,
+                            selectedDistrict: controller.filters.district,
+                            selectedUpazila: controller.filters.upazila,
+                            onDivisionChanged: controller.setDivision,
+                            onDistrictChanged: controller.setDistrict,
+                            onUpazilaChanged: controller.setUpazila,
                           ),
-                          FilterTile(
-                            title: 'Blood Bank',
-                            onTap: () {
-                              // Navigate or expand
-                            },
-                          ),
-                          FilterTile(
-                            title: 'Donors',
-                            onTap: () {
-                              // Navigate or expand
-                            },
-                          ),
+
+                          //address bpx
                         ],
                       ),
                     ),

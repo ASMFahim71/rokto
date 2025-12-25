@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rokto/features/onboarding_screen/view/onboarding_screen.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -53,7 +54,24 @@ class _SplashScreenState extends State<SplashScreen> {
                     if (mounted) {
                       bool isLoggedIn = StorageService().isLoggedIn();
                       if (isLoggedIn) {
-                        Navigator.pushReplacementNamed(context, '/home');
+                        String? bloodGroup = StorageService()
+                            .getUserBloodGroup();
+                        String? district = StorageService().getUserDistrict();
+
+                        if (bloodGroup == null ||
+                            bloodGroup.isEmpty ||
+                            district == null ||
+                            district.isEmpty) {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRoutesNames.additonalInfo,
+                          );
+                        } else {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRoutesNames.home,
+                          );
+                        }
                       } else {
                         Navigator.pushReplacement(
                           context,

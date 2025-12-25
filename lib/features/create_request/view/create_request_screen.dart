@@ -1,15 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
-import 'package:rokto/features/create_request/controller/location_controller.dart';
+import 'package:rokto/core/common/widgets/address_selector.dart';
+import 'package:rokto/core/models/address_models.dart';
+import 'package:rokto/features/auth/details_info/provider/address_provider.dart';
+import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
+import 'package:rokto/core/common/widgets/bloodtype.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/core/common/widgets/elevated_button.dart';
 import 'package:rokto/features/create_request/controller/create_request_controller.dart';
-import 'package:rokto/features/create_request/view/widgets/request_dropdown.dart';
+
 import 'package:rokto/features/create_request/view/widgets/request_text_field.dart';
-import 'package:rokto/features/create_request/view/widgets/request_autocomplete.dart';
-import 'package:intl/intl.dart';
 
 class CreateRequestScreen extends ConsumerStatefulWidget {
   const CreateRequestScreen({super.key});
@@ -20,18 +23,15 @@ class CreateRequestScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
-  String? _selectedBloodGroup;
-  String? _selectedGender;
-
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _hospitalController = TextEditingController();
   final TextEditingController _causeController = TextEditingController();
-  // Location Controllers
-  final TextEditingController _districtController = TextEditingController();
-  final TextEditingController _thanaController = TextEditingController();
-  final TextEditingController _upazilaController = TextEditingController();
-
   final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+
+  String? _selectedBloodGroup;
+  String? _selectedGender;
 
   final List<String> _bloodGroups = [
     'A+',
@@ -45,48 +45,37 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
   ];
   final List<String> _genders = ['Male', 'Female', 'Other'];
 
-  // State for filtering
-  List<String> _availableThanas = [];
-  List<String> _availableUpazilas = [];
+  // Location State
+  Division? _selectedDivision;
+  District? _selectedDistrict;
+  Upazila? _selectedUpazila;
 
   @override
   void dispose() {
     _dateController.dispose();
     _timeController.dispose();
+    _hospitalController.dispose();
     _causeController.dispose();
-    _districtController.dispose();
-    _thanaController.dispose();
-    _upazilaController.dispose();
     _mobileController.dispose();
+    _areaController.dispose();
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  void _selectDate(BuildContext context) {
+    final now = DateTime.now();
+    final startOfToday = DateTime(now.year, now.month, now.day);
+
+    showCustomDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primaryColor,
-              onPrimary: Colors.white,
-              onSurface: AppColors.primaryTextColor,
-              surface: AppColors.primaryBackground,
-            ),
-            dialogBackgroundColor: AppColors.primaryBackground,
-          ),
-          child: child!,
-        );
+      minimumDate: startOfToday,
+      maximumDate: DateTime(2101),
+      onDateSelected: (pickedDate) {
+        setState(() {
+          _dateController.text =
+              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+        });
       },
     );
-    if (picked != null) {
-      setState(() {
-        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
   }
 
   Future<void> _selectTime(BuildContext context) async {
@@ -117,24 +106,6 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
     }
   }
 
-  void _onDistrictSelected(String selection) {
-    setState(() {
-      _districtController.text = selection;
-      _availableThanas = [];
-      _availableUpazilas = [];
-      _thanaController.clear();
-      _upazilaController.clear();
-    });
-  }
-
-  void _onThanaSelected(String selection) {
-    setState(() {
-      _thanaController.text = selection;
-      _availableUpazilas = [];
-      _upazilaController.clear();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,132 +120,177 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
         ),
         child: Column(
           children: [
-            RequestDropdown(
-              hintText: "Blood Group",
-              icon: Icons.bloodtype_outlined,
-              items: _bloodGroups,
-              value: _selectedBloodGroup,
-              onChanged: (val) {
-                setState(() {
-                  _selectedBloodGroup = val;
-                });
-              },
-            ),
-            SizedBox(height: 15.h),
-
-            GestureDetector(
-              onTap: () => _selectDate(context),
-              child: AbsorbPointer(
-                child: RequestTextField(
-                  controller: _dateController,
-                  hintText: "Date",
-                  icon: Icons.calendar_today_outlined,
-                ),
+            // 1. Choose Blood Section
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Choose Blood",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryTextColor,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  BloodGroupSelector(
+                    selectedBloodGroup: _selectedBloodGroup,
+                    bloodGroups: _bloodGroups,
+                    onSelected: (val) {
+                      setState(() {
+                        _selectedBloodGroup = val;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 15.h),
+            SizedBox(height: 16.h),
 
-            GestureDetector(
-              onTap: () => _selectTime(context),
-              child: AbsorbPointer(
-                child: RequestTextField(
-                  controller: _timeController,
-                  hintText: "Time",
-                  icon: Icons.access_time_outlined,
-                ),
+            // 2. Patient & Hospital Info Section
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Patient & Hospital Info",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryTextColor,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _selectDate(context),
+                          child: AbsorbPointer(
+                            child: RequestTextField(
+                              controller: _dateController,
+                              hintText: "Date",
+                              icon: Icons.calendar_today_outlined,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15.w),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => _selectTime(context),
+                          child: AbsorbPointer(
+                            child: RequestTextField(
+                              controller: _timeController,
+                              hintText: "Time",
+                              icon: Icons.access_time_outlined,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15.h),
+                  RequestTextField(
+                    controller: _hospitalController,
+                    hintText: "Hospital Name",
+                    icon: Icons.local_hospital_outlined,
+                  ),
+                  SizedBox(height: 15.h),
+                  RequestTextField(
+                    controller: _causeController,
+                    hintText: "Cause",
+                    icon: Icons.sick_outlined,
+                  ),
+                  SizedBox(height: 15.h),
+                  RequestTextField(
+                    controller: _areaController,
+                    hintText: "Area (example: Mirpur 10)",
+                    icon: Icons.location_on_outlined,
+                  ),
+
+                  SizedBox(height: 15.h),
+                  RequestTextField(
+                    controller: _mobileController,
+                    hintText: "Contact Number",
+                    icon: Icons.phone_outlined,
+                    keyboardType: TextInputType.phone,
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 15.h),
+            SizedBox(height: 20.h),
 
-            RequestTextField(
-              controller: _causeController,
-              hintText: "Cause",
-              icon: Icons.sick_outlined,
-            ),
-            SizedBox(height: 15.h),
-
-            // District Autocomplete
-            Consumer(
-              builder: (context, ref, child) {
-                return RequestAutocomplete(
-                  controller: _districtController,
-                  hintText: "District",
-                  icon: Icons.location_on_outlined,
-                  options: const [],
-                  onSelected: (val) async {
-                    _onDistrictSelected(val);
-                    // Fetch options
-                    final thanas = await ref
-                        .read(locationControllerProvider.notifier)
-                        .getThanas(val);
-                    setState(() {
-                      _availableThanas = thanas;
-                    });
-                  },
-                );
-              },
-            ),
-            SizedBox(height: 15.h),
-
-            // Thana Autocomplete (Filtered by District)
-            RequestAutocomplete(
-              controller: _thanaController,
-              hintText: "Thana",
-              icon: Icons.map_outlined,
-              options: _availableThanas,
-              onSelected: (val) async {
-                _onThanaSelected(val);
-                final upazilas = await ref
-                    .read(locationControllerProvider.notifier)
-                    .getUpazilas(val);
+            // 3. Location Section
+            AddressSelector(
+              title: "Nearest Location of Hospital",
+              selectedDivision: _selectedDivision,
+              selectedDistrict: _selectedDistrict,
+              selectedUpazila: _selectedUpazila,
+              onDivisionChanged: (val) {
                 setState(() {
-                  _availableUpazilas = upazilas;
+                  if (_selectedDivision != val) {
+                    _selectedDivision = val;
+                    _selectedDistrict = null;
+                    _selectedUpazila = null;
+                  }
                 });
               },
-            ),
-            SizedBox(height: 15.h),
-
-            // Upazila Autocomplete (Filtered by Thana)
-            RequestAutocomplete(
-              controller: _upazilaController,
-              hintText: "Upazila",
-              icon: Icons.holiday_village_outlined,
-              options: _availableUpazilas,
-              onSelected: (selection) {
-                _upazilaController.text = selection;
-              },
-            ),
-            SizedBox(height: 15.h),
-
-            RequestDropdown(
-              hintText: "Gender",
-              icon: Icons.person_outline,
-              items: _genders,
-              value: _selectedGender,
-              onChanged: (val) {
+              onDistrictChanged: (val) {
                 setState(() {
-                  _selectedGender = val;
+                  if (_selectedDistrict != val) {
+                    _selectedDistrict = val;
+                    _selectedUpazila = null;
+                  }
                 });
               },
-            ),
-            SizedBox(height: 15.h),
-
-            RequestTextField(
-              controller: _mobileController,
-              hintText: "Mobile",
-              icon: Icons.phone_outlined,
-              keyboardType: TextInputType.phone,
+              onUpazilaChanged: (val) {
+                setState(() {
+                  _selectedUpazila = val;
+                });
+              },
             ),
 
             SizedBox(height: 20.h),
             CustomElevatedButton(
               text: "Request",
               onPressed: () {
-                if (_selectedBloodGroup == null || _selectedGender == null) {
+                if (_selectedBloodGroup == null ||
+                    _selectedGender == null ||
+                    _selectedDivision == null ||
+                    _selectedDistrict == null ||
+                    _selectedUpazila == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Please select Blood Group and Gender"),
-                    ),
+                    const SnackBar(content: Text("Please fill all fields")),
                   );
                   return;
                 }
@@ -285,10 +301,12 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
                       bloodGroup: _selectedBloodGroup!,
                       date: _dateController.text,
                       time: _timeController.text,
+                      hospital: _hospitalController.text,
                       cause: _causeController.text,
-                      district: _districtController.text,
-                      thana: _thanaController.text,
-                      upazila: _upazilaController.text,
+                      area: _areaController.text,
+                      divisionId: _selectedDivision!.id,
+                      districtId: _selectedDistrict!.id,
+                      upazilaId: _selectedUpazila!.id,
                       gender: _selectedGender!,
                       mobile: _mobileController.text,
                     );

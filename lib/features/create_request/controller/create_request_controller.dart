@@ -13,16 +13,18 @@ class CreateRequestController extends _$CreateRequestController {
     required String bloodGroup,
     required String date,
     required String time,
+    required String hospital,
     required String cause,
-    required String district,
-    required String thana,
-    required String upazila,
+    required String area,
+    required int divisionId,
+    required int districtId,
+    required int upazilaId,
     required String gender,
     required String mobile,
   }) {
     // TODO: Implement API call
     print(
-      "Request Submitted: $bloodGroup, $date, $time, $cause, $district, $thana, $upazila, $gender, $mobile",
+      "Request Submitted: $bloodGroup, $date, $time, $hospital, $cause, $area, $divisionId, $districtId, $upazilaId, $gender, $mobile",
     );
   }
 }

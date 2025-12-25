@@ -17,8 +17,8 @@ class BloodGroupSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 12.w,
-      runSpacing: 12.h,
+      spacing: 8.w,
+      runSpacing: 8.h,
       children: bloodGroups.map((bg) {
         final isSelected = selectedBloodGroup == bg;
         return GestureDetector(
@@ -26,7 +26,7 @@ class BloodGroupSelector extends StatelessWidget {
             onSelected(bg);
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: isSelected
                   ? AppColors.primaryColor
