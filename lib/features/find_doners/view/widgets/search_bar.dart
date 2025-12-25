@@ -31,7 +31,11 @@ class SearchBarWidget extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: Padding(
             padding: EdgeInsets.all(12.r),
-            child: Image.asset(ImageRes.searchIcon, color: AppColors.iconGray),
+            child: SvgPicture.asset(
+              ImageRes.searchIcon,
+              height: 24.h,
+              width: 24.w,
+            ),
           ),
           hintText: 'Search by name',
           hintStyle: TextStyle(

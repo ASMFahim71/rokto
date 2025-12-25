@@ -53,7 +53,11 @@ class DonorCardWidget extends StatelessWidget {
                     SizedBox(
                       width: 16.w,
                       height: 16.h,
-                      child: Image.asset(ImageRes.mapIcon),
+                      child: SvgPicture.asset(
+                        ImageRes.mapIcon,
+                        height: 16.h,
+                        width: 16.w,
+                      ),
                     ),
                     4.horizontalSpace,
                     Expanded(

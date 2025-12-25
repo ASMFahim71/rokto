@@ -91,7 +91,7 @@ Widget _buildNavItem(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
+        SvgPicture.asset(
           imagePath,
           height: size ?? 24.h,
           width: size ?? 24.w,

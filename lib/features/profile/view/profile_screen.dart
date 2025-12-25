@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
@@ -47,75 +48,34 @@ class ProfileScreen extends ConsumerWidget {
               UserLocation(),
               SizedBox(height: 24.h),
               // Action Buttons
-              Container(
-                height: 50.h,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                //  color: Colors.amber,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppColors.tealColor, // Teal color from image
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              ImageRes.callIcon,
-                              width: 26.w,
-                              height: 26.h,
-                              color: AppColors.primaryBackground,
-                            ),
-                            SizedBox(width: 8.w),
-                            Text16Normal(
-                              text: "Call Now",
-                              color: AppColors.primaryBackground,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ],
-                        ),
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // TODO: Implement Call Now
+                      toastInfo("Not implemented yet");
+                    },
+                    child: SvgPicture.asset(
+                      ImageRes.callNow,
+                      width: 158.w,
+                      height: 52.h,
                     ),
-                    SizedBox(width: 16.w),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              ImageRes.requestIcon,
-                              width: 26.w,
-                              height: 26.h,
-                              color: AppColors.primaryBackground,
-                            ),
-                            SizedBox(width: 8.w),
-                            Text16Normal(
-                              text: "Request",
-                              color: AppColors.primaryBackground,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ],
-                        ),
-                      ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // TODO: Implement Request
+                      toastInfo("Not implemented yet");
+                    },
+                    child: SvgPicture.asset(
+                      ImageRes.request,
+                      width: 158.w,
+                      height: 52.h,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+
               SizedBox(height: 20.h),
               // Stats Row
               Row(
@@ -138,7 +98,7 @@ class ProfileScreen extends ConsumerWidget {
                       onTap: () {
                         toastInfo("Not Implemented yet");
                       },
-                      image: Image.asset(
+                      image: SvgPicture.asset(
                         ImageRes.calendar,
                         width: 24.w,
                         height: 24.h,
@@ -161,7 +121,7 @@ class ProfileScreen extends ConsumerWidget {
                       onTap: () {
                         toastInfo("Not Implemented yet");
                       },
-                      image: Image.asset(
+                      image: SvgPicture.asset(
                         ImageRes.message,
                         width: 24.w,
                         height: 24.h,
@@ -174,7 +134,7 @@ class ProfileScreen extends ConsumerWidget {
                       onTap: () {
                         toastInfo("Not Implemented yet");
                       },
-                      image: Image.asset(
+                      image: SvgPicture.asset(
                         ImageRes.help,
                         width: 24.w,
                         height: 24.h,
@@ -187,7 +147,7 @@ class ProfileScreen extends ConsumerWidget {
                       onTap: () {
                         toastInfo("Not Implemented yet");
                       },
-                      image: Image.asset(
+                      image: SvgPicture.asset(
                         ImageRes.logout,
                         width: 24.w,
                         height: 24.h,

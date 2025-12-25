@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 
 Widget buildSettingsTile({
-  required Image image,
+  required Widget image,
   required String title,
   Widget? trailing,
   bool isLast = false,
