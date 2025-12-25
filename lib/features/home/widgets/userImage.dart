@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
+
 class UserImage extends StatelessWidget {
   const UserImage({super.key});
 

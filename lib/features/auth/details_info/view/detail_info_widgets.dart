@@ -219,6 +219,7 @@ InputDecoration buildInputDecoration(
 }) {
   return InputDecoration(
     labelText: label,
+    hintText: 'Example: Mirpur 10',
     labelStyle: TextStyle(fontSize: 14.sp, color: AppColors.secondaryTextColor),
     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
     suffixIcon: suffixIcon,

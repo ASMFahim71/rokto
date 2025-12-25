@@ -6,8 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/widgets/apptext_field.dart';
 import 'package:rokto/core/common/widgets/elevated_button.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
-import 'package:rokto/features/auth/signin_screen/controller/siginin_controller.dart';
-import 'package:rokto/features/auth/signin_screen/provider/signin_notifier.dart';
+import 'package:rokto/features/auth/signin_screen/controller/signin_controller.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
 
@@ -19,15 +18,21 @@ class SignInScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
-  late SigninNotifier _controller;
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
-  void initState() {
-    super.initState();
-    _controller = SigninNotifier(ref: ref);
+  void dispose() {
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Watch the controller state to show loading indicator
+    final isLoading = ref.watch(signInControllerProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -49,7 +54,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 20.h),
-              // Header (Logo + Title)
               // Header (Logo + Title)
               Hero(
                 tag: 'auth_logo',
@@ -101,18 +105,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               AppTextField(
                 icon: Icons.phone,
                 labelText: 'Phone',
-                onChanged: (value) => ref
-                    .read(sigininControllerProvider.notifier)
-                    .onPhoneChange(value),
+                controller: _phoneController,
+                key: const ValueKey('phone'),
               ),
               SizedBox(height: 16.h),
               AppTextField(
                 icon: Icons.lock_outline,
                 obscureText: true,
                 labelText: 'Password',
-                onChanged: (value) => ref
-                    .read(sigininControllerProvider.notifier)
-                    .onPasswordChange(value),
+                controller: _passwordController,
               ),
 
               SizedBox(height: 40.h),
@@ -120,11 +121,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               // Login Button
               CustomElevatedButton(
                 text: 'LOG IN',
+                isLoading: isLoading,
                 onPressed: () {
-                  // TODO: Use actual token from API response
-                  StorageService().setLoggedIn("demo_token");
-                  Navigator.pushNamed(context, AppRoutesNames.home);
-                  _controller.handleRegister();
+                  ref
+                      .read(signInControllerProvider.notifier)
+                      .handleSignIn(
+                        phone: _phoneController.text.trim(),
+                        password: _passwordController.text.trim(),
+                        context: context,
+                      );
                 },
               ),
 
@@ -161,7 +166,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         fontWeight: FontWeight.w600,
                         color: AppColors.primaryColor,
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(context, AppRoutesNames.register);
+                        },
                     ),
                   ],
                 ),

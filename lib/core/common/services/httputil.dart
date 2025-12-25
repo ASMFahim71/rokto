@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:rokto/core/common/utils/constants.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 
 class HttpUtil {
   late Dio dio;
@@ -21,11 +22,11 @@ class HttpUtil {
 
   Map<String, dynamic>? getAuthorizationHeader() {
     var headers = <String, dynamic>{};
-    // var accessToken = Global.storageService.getUserToken();
-    // print(accessToken);
-    // if (accessToken.isNotEmpty) {
-    //   headers["Authorization"] = "Bearer $accessToken";
-    // }
+    var accessToken = storageService.getUserToken();
+    print("accessToken: $accessToken");
+    if (accessToken != null) {
+      headers["Authorization"] = "Bearer $accessToken";
+    }
     return headers;
   }
 
@@ -49,6 +50,29 @@ class HttpUtil {
     var response = await dio.post(
       path,
       data: data,
+      queryParameters: queryParameters,
+      options: requestOptions,
+    );
+    return response.data;
+  }
+
+  Future get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    void Function(int, int)? onReceiveProgress,
+  }) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+
+    Map<String, dynamic>? authorization = getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers?.addAll(authorization); //overwrite the headers
+    }
+
+    var response = await dio.get(
+      path,
       queryParameters: queryParameters,
       options: requestOptions,
     );

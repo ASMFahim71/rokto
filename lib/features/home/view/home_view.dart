@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 
 import 'package:rokto/features/home/widgets/userImage.dart';
 import 'package:rokto/features/home/widgets/donation_request_header.dart';
@@ -18,6 +19,7 @@ class HomeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersAsync = ref.watch(bannerProvider);
     final donationRequestAsync = ref.watch(donationRequestProvider);
+    String userName = StorageService().getUserName() ?? "Hero";
 
     return SafeArea(
       child: Column(
@@ -38,13 +40,13 @@ class HomeView extends ConsumerWidget {
                     ),
                     SizedBox(height: 4.h),
                     text24Normal(
-                      text: 'Ahsanul', // Placeholder or use user name
+                      text: userName,
                       color: AppColors.primaryTextColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ],
                 ),
-                const UserImage(),
+                // const UserImage(),
               ],
             ),
           ),

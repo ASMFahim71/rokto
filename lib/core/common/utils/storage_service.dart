@@ -33,6 +33,7 @@ class StorageService {
 
   // Specific Keys
   static const String _storageUserProfileKey = 'user_profile_key';
+  static const String _storageUserNameKey = 'user_name_key';
   static const String _storageUserTokenKey = 'user_token_key';
   static const String _storageDeviceFirstOpenKey = 'device_first_open';
 
@@ -55,6 +56,41 @@ class StorageService {
 
   Future<bool> removeToken() {
     return _prefs.remove(_storageUserTokenKey);
+  }
+
+  Future<bool> removeUserName() {
+    return _prefs.remove(_storageUserNameKey);
+  }
+
+  String? getUserToken() {
+    return _prefs.getString(_storageUserTokenKey);
+  }
+
+  Future<bool> setUserName(String name) {
+    return _prefs.setString(_storageUserNameKey, name);
+  }
+
+  String? getUserName() {
+    return _prefs.getString(_storageUserNameKey);
+  }
+
+  static const String _storageUserBloodGroupKey = 'user_blood_group_key';
+  static const String _storageUserDistrictKey = 'user_district_key';
+
+  Future<bool> setUserBloodGroup(String bloodGroup) {
+    return _prefs.setString(_storageUserBloodGroupKey, bloodGroup);
+  }
+
+  String? getUserBloodGroup() {
+    return _prefs.getString(_storageUserBloodGroupKey);
+  }
+
+  Future<bool> setUserDistrict(String district) {
+    return _prefs.setString(_storageUserDistrictKey, district);
+  }
+
+  String? getUserDistrict() {
+    return _prefs.getString(_storageUserDistrictKey);
   }
 }
 

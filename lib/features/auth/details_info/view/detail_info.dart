@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rokto/core/models/address_models.dart';
 import 'package:rokto/features/auth/details_info/provider/address_provider.dart';
 import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
+import 'package:rokto/features/auth/details_info/controller/detail_info_controller.dart';
 
 class DetailInfo extends ConsumerStatefulWidget {
   const DetailInfo({super.key});
@@ -77,8 +78,8 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _dateController.text = "${tempPickedDate.toLocal()}"
-                            .split(' ')[0];
+                        _dateController.text =
+                            "${tempPickedDate.year}-${tempPickedDate.month.toString().padLeft(2, '0')}-${tempPickedDate.day.toString().padLeft(2, '0')}";
                       });
                       Navigator.of(context).pop();
                     },
@@ -364,22 +365,27 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
               SizedBox(height: 24.h),
 
               // Optional Details
-              TextFormField(
-                controller: _optionalController,
-                maxLines: 1,
-                style: TextStyle(fontSize: 14.sp),
-                decoration: buildInputDecoration(
-                  'Your Area',
-                  alignLabelWithHint: true,
-                ),
-              ),
-
               SizedBox(height: 40.h),
 
-              CustomElevatedButton(
-                text: 'SAVE & CONTINUE',
-                onPressed: () {
-                  // Handle Save Logic
+              Consumer(
+                builder: (context, ref, child) {
+                  final isLoading = ref.watch(detailInfoControllerProvider);
+                  return CustomElevatedButton(
+                    text: 'SAVE & CONTINUE',
+                    isLoading: isLoading,
+                    onPressed: () {
+                      ref
+                          .read(detailInfoControllerProvider.notifier)
+                          .saveDetails(
+                            divisionId: selectedDivision?.id,
+                            districtId: selectedDistrict?.id,
+                            upazilaId: selectedUpazila?.id,
+                            bloodGroup: selectedBloodGroup,
+                            lastDonateDate: _dateController.text,
+                            context: context,
+                          );
+                    },
+                  );
                 },
               ),
               SizedBox(height: 20.h),
