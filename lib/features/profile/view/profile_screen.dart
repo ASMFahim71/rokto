@@ -10,7 +10,6 @@ import 'package:rokto/features/profile/controller/profile_controller.dart';
 import 'package:rokto/features/profile/view/widgets/setting_title.dart';
 import 'package:rokto/features/profile/view/widgets/stat_card.dart';
 import 'package:rokto/features/profile/view/widgets/user_location.dart';
-
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
 
@@ -42,9 +41,18 @@ class ProfileScreen extends ConsumerWidget {
                   width: 80.w,
                   height: 80.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.person),
+                  alignment: Alignment.center,
+                  child: Text(
+                    userName.isNotEmpty ? userName[0].toUpperCase() : "U",
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryTextColor,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -152,11 +160,9 @@ class ProfileScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     buildSettingsTile(
-                      onTap: () {
-                        ref
-                            .read(profileControllerProvider.notifier)
-                            .toggleAvailable();
-                      },
+                      // onTap: () {
+                      //       isAvailable
+                      // },
                       image: Image.asset(
                         ImageRes.calendar,
                         width: 24.w,

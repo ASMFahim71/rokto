@@ -21,7 +21,7 @@ class SearchScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(title: "Search"),
+      appBar: buildAppBar(title: "Search Blood"),
       body: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {

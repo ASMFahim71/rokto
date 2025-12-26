@@ -9,7 +9,11 @@ part 'profile_controller.g.dart';
 class ProfileController extends _$ProfileController {
   @override
   Future<ProfileStat> build() async {
-    return await ProfileRepo.getProfileStats();
+    final stats = await ProfileRepo.getProfileStats();
+    final isAvailable = await ProfileRepo.getAvailability();
+
+    stats.isAvailable = isAvailable;
+    return stats;
   }
 
   Future<void> toggleAvailable() async {
@@ -33,7 +37,18 @@ class ProfileController extends _$ProfileController {
     );
 
     try {
-      await ProfileRepo.toggleStatus(newStatus);
+      final serverStatus = await ProfileRepo.toggleStatus(newStatus);
+      print("Server returned status: $serverStatus");
+
+      // Update with actual server status
+      state = AsyncValue.data(
+        ProfileStat(
+          donationCount: currentState.donationCount,
+          requestCount: currentState.requestCount,
+          isAvailable: serverStatus,
+        ),
+      );
+
       toastInfo("Status updated");
     } catch (e) {
       print("Toggle failed: $e");

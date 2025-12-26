@@ -23,7 +23,7 @@ class ProfileStat {
   factory ProfileStat.fromJson(Map<String, dynamic> json) => ProfileStat(
     donationCount: json["donation_count"],
     requestCount: json["request_count"],
-    isAvailable: json["is_available"],
+    isAvailable: json["is_available"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {

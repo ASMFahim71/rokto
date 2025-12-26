@@ -55,27 +55,4 @@ class HttpUtil {
     );
     return response.data;
   }
-
-  Future get(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-    CancelToken? cancelToken,
-    void Function(int, int)? onReceiveProgress,
-  }) async {
-    Options requestOptions = options ?? Options();
-    requestOptions.headers = requestOptions.headers ?? {};
-
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers?.addAll(authorization); //overwrite the headers
-    }
-
-    var response = await dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: requestOptions,
-    );
-    return response.data;
-  }
 }

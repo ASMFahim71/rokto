@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rokto/core/models/address_models.dart';
-import 'package:rokto/features/auth/details_info/provider/address_provider.dart';
-
 void showCustomDatePicker({
   required BuildContext context,
   required Function(DateTime) onDateSelected,
@@ -17,6 +13,10 @@ void showCustomDatePicker({
   final now = DateTime.now();
 
   DateTime tempPickedDate = initialDate ?? now;
+
+  if (maximumDate != null && tempPickedDate.isAfter(maximumDate)) {
+    tempPickedDate = maximumDate;
+  }
 
   showModalBottomSheet(
     context: context,

@@ -47,6 +47,28 @@ class HomeView extends ConsumerWidget {
                   ],
                 ),
                 // const UserImage(),
+                Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_outlined,
+                      size: 28.w,
+                      color: AppColors.primarySecondaryElementText,
+                    ),
+                    Positioned(
+                      right: 2.w,
+                      top: 2.h,
+                      child: Container(
+                        width: 10.w,
+                        height: 10.w,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1.5.w),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

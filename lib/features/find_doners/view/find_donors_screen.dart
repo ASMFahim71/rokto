@@ -18,13 +18,13 @@ class FindDonorsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: buildGlobalAppBar(title: 'Find Donors'),
+      appBar: buildGlobalAppBar(title: 'Find Donors', context: context),
       body: ListenableBuilder(
         listenable: controller,
         builder: (context, child) {
           return Column(
             children: [
-              SizedBox(height: 20.h,),
+              SizedBox(height: 20.h),
               // Top Search and Filter
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -51,7 +51,7 @@ class FindDonorsScreen extends ConsumerWidget {
                 child: controller.isLoading
                     ? const Center(
                         child: CircularProgressIndicator(
-                          color: AppColors.primaryColor
+                          color: AppColors.primaryColor,
                         ),
                       )
                     : controller.displayDonors.isEmpty
@@ -63,9 +63,7 @@ class FindDonorsScreen extends ConsumerWidget {
                         ),
                       )
                     : ListView.builder(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
                         itemCount: controller.displayDonors.length,
                         itemBuilder: (context, index) {
                           return DonorCardWidget(

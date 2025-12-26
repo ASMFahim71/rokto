@@ -15,7 +15,7 @@ class DonationRequestScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(title: "Donation Request"),
+      appBar: buildGlobalAppBar(title: "Donation Request", context: context),
       body: ListView.separated(
         padding: EdgeInsets.only(
           left: 20.w,

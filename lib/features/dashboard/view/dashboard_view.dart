@@ -56,15 +56,15 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     final selectedIndex = ref.watch(navbarIndexProvider);
 
     // Listen to provider changes and update page
-    ref.listen<int>(navbarIndexProvider, (previous, next) {
-      if (_pageController.hasClients && _pageController.page?.round() != next) {
-        _pageController.animateToPage(
-          next,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
+    // ref.listen<int>(navbarIndexProvider, (previous, next) {
+    //   if (_pageController.hasClients && _pageController.page?.round() != next) {
+    //     _pageController.animateToPage(
+    //       next,
+    //       duration: const Duration(milliseconds: 300),
+    //       curve: Curves.easeInOut,
+    //     );
+    //   }
+    // });
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -68,8 +68,10 @@ class AddressSelector extends ConsumerWidget {
                   hasError: false,
                   useShadowStyle: false,
                   prefixIcon: Icons.map_outlined,
-                  onRetry: () => ref.refresh(divisionListProvider),
-                  onRefresh: () => ref.refresh(divisionListProvider),
+                  onRetry: () =>
+                      ref.read(divisionListProvider.notifier).fetchDivisions(),
+                  onRefresh: () =>
+                      ref.read(divisionListProvider.notifier).fetchDivisions(),
                   onChanged: onDivisionChanged,
                 ),
                 loading: () => SelectionField<Division>(
@@ -94,7 +96,8 @@ class AddressSelector extends ConsumerWidget {
                   hasError: true,
                   useShadowStyle: false,
                   prefixIcon: Icons.map_outlined,
-                  onRetry: () => ref.refresh(divisionListProvider),
+                  onRetry: () =>
+                      ref.read(divisionListProvider.notifier).fetchDivisions(),
                   onRefresh: () {},
                   onChanged: (_) {},
                 ),
