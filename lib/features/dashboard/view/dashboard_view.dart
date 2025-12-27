@@ -165,6 +165,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             iconRes,
             height: 24.h,
             width: 24.w,
+
             color: isActive ? AppColors.primaryColor : const Color(0xFF9E9E9E),
           ),
           if (isActive)
