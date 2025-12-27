@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 import 'package:rokto/core/common/widgets/text_widgets.dart';
 
 class UserLocation extends StatelessWidget {
@@ -20,7 +21,7 @@ class UserLocation extends StatelessWidget {
         ),
         SizedBox(width: 4.w),
         Text14Normal(
-          text: "Dhaka, Bangladesh",
+          text: "${storageService.getUserDistrict() ?? ""}, Bangladesh",
           color: AppColors.secondaryTextColor,
         ),
       ],

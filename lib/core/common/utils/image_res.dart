@@ -38,4 +38,7 @@ class ImageRes {
   static const String help = "${_iconPath}help.svg";
   static const String calendar = "${_iconPath}calender.svg";
   static const String drop = "${_iconPath}bdroop.svg";
+  static const String drop2 = "${_iconPath}bbdrop.png";
+  static const String drop3 = "${_iconPath}dropp.svg";
+  static const String drop4 = "${_iconPath}allahbachao.png";
 }

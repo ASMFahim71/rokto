@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rokto/core/common/widgets/app_popup.dart';
 import 'package:rokto/core/models/auth_models.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 import 'package:rokto/features/auth/register_screen/controller/register_controller.dart';
 import 'package:rokto/features/auth/register_screen/repo/register_repo.dart';
 
@@ -57,6 +58,11 @@ class RegisterNotifier {
     try {
       var response = await RegisterRepo.register(params);
       if (response.token != null) {
+        await StorageService().setLoggedIn(response.token!);
+        await StorageService().setUserName(name);
+        print("Token saved: ${StorageService().getUserToken()}");
+        print("User Name saved: ${StorageService().getUserName()}");
+
         toastInfo("Register successfully");
         Navigator.pushNamedAndRemoveUntil(
           ref.context,

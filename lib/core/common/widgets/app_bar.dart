@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +24,24 @@ AppBar buildAppBar({String title = ''}) {
   );
 }
 
-AppBar buildGlobalAppBar({String title = ''}) {
+AppBar buildGlobalAppBar({String title = '', required BuildContext context}) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: Colors.white,
     elevation: 0,
-    scrolledUnderElevation: 0,
     centerTitle: true,
     title: Text16Normal(
       text: title,
       color: AppColors.primaryTextColor,
       fontWeight: FontWeight.bold,
     ),
+    leading: IconButton(
+      icon: Icon(
+        Icons.chevron_left_outlined,
+        color: AppColors.primaryColor,
+        size: 30.sp,
+      ),
+      onPressed: () => Navigator.pop(context),
+    ),
+    scrolledUnderElevation: 0,
   );
 }

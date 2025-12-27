@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/widgets/address_selector.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/core/common/widgets/bloodtype.dart';
 import 'package:rokto/core/common/widgets/elevated_button.dart';
@@ -9,6 +10,7 @@ import '../../controller/search_controller.dart';
 import 'search_input.dart';
 import 'filter_section_header.dart';
 import 'filter_tile.dart';
+import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
 
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
@@ -19,7 +21,7 @@ class SearchScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(title: "Search"),
+      appBar: buildAppBar(title: "Search Blood"),
       body: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {

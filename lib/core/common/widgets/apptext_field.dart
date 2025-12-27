@@ -71,3 +71,12 @@ class AppTextField extends StatelessWidget {
     );
   }
 }
+
+class AppTextFieldNormal extends StatelessWidget {
+  const AppTextFieldNormal({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}

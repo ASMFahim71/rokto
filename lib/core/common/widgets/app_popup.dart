@@ -14,6 +14,40 @@ toastInfo(
     textColor: textColor,
     fontSize: 16.sp,
     gravity: ToastGravity.BOTTOM,
-    toastLength: Toast.LENGTH_SHORT,
   );
+}
+
+class AppBox {
+  static void confirmPopup(
+    BuildContext context,
+    String title,
+    String content,
+    VoidCallback onConfirm,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: const Text("Confirm"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                onConfirm(); // Execute the callback
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

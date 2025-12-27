@@ -18,7 +18,7 @@ class ReportScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(title: "Report"),
+      appBar: buildGlobalAppBar(title: "Report", context: context),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.w),
         child: Column(

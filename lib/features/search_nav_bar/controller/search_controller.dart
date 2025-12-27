@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/filter_model.dart';
 import '../repo/search_repo.dart';
+import 'package:rokto/core/models/address_models.dart';
 
 final searchControllerProvider = Provider.autoDispose(
   (ref) => SearchController(),
@@ -45,6 +46,31 @@ class SearchController extends ChangeNotifier {
       _filters = _filters.copyWith(bloodGroup: bg);
     }
     notifyListeners();
+  }
+
+  void setDivision(Division? division) {
+    if (_filters.division != division) {
+      _filters = _filters.copyWith(
+        division: division,
+        clearDistrict: true,
+        clearUpazila: true,
+      );
+      notifyListeners();
+    }
+  }
+
+  void setDistrict(District? district) {
+    if (_filters.district != district) {
+      _filters = _filters.copyWith(district: district, clearUpazila: true);
+      notifyListeners();
+    }
+  }
+
+  void setUpazila(Upazila? upazila) {
+    if (_filters.upazila != upazila) {
+      _filters = _filters.copyWith(upazila: upazila);
+      notifyListeners();
+    }
   }
 
   void applyFilters() {

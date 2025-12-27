@@ -11,12 +11,22 @@ import 'package:rokto/features/profile/controller/profile_controller.dart';
 import 'package:rokto/features/profile/view/widgets/setting_title.dart';
 import 'package:rokto/features/profile/view/widgets/stat_card.dart';
 import 'package:rokto/features/profile/view/widgets/user_location.dart';
+import 'package:rokto/core/routes/app_routes_names.dart';
+import 'package:rokto/core/common/utils/storage_service.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAvailable = ref.watch(profileControllerProvider);
+    final profileState = ref.watch(profileControllerProvider);
+    final stats = profileState.asData?.value;
+
+    // Default values if loading or error
+    final isAvailable = stats?.isAvailable ?? false;
+    final donationCount = stats?.donationCount ?? 0;
+    final requestCount = stats?.requestCount ?? 0;
+
+    String userName = StorageService().getUserName() ?? "User";
 
     return Scaffold(
       appBar: buildAppBar(title: "Profile"),
@@ -32,17 +42,23 @@ class ProfileScreen extends ConsumerWidget {
                   width: 80.w,
                   height: 80.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/admin.jpg"),
-                      fit: BoxFit.cover,
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    userName.isNotEmpty ? userName[0].toUpperCase() : "U",
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryTextColor,
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 16.h),
               // Name
-              text22Normal(text: "Ahsanul Imam", fontWeight: FontWeight.bold),
+              text22Normal(text: userName, fontWeight: FontWeight.bold),
               SizedBox(height: 8.h),
               // Location
               UserLocation(),
@@ -81,9 +97,18 @@ class ProfileScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildStatCard("A+", "Blood Type"),
-                  buildStatCard("05", "Donated"),
-                  buildStatCard("02", "Requested"),
+                  buildStatCard(
+                    storageService.getUserBloodGroup() ?? "",
+                    "Blood Type",
+                  ),
+                  buildStatCard(
+                    donationCount.toString().padLeft(2, '0'),
+                    "Donated",
+                  ),
+                  buildStatCard(
+                    requestCount.toString().padLeft(2, '0'),
+                    "Requested",
+                  ),
                 ],
               ),
               SizedBox(height: 20.h),
@@ -145,7 +170,21 @@ class ProfileScreen extends ConsumerWidget {
                     SizedBox(height: 10.h),
                     buildSettingsTile(
                       onTap: () {
-                        toastInfo("Not Implemented yet");
+                        AppBox.confirmPopup(
+                          context,
+                          "Sign Out",
+                          "Are you sure you want to sign out?",
+                          () {
+                            StorageService().removeToken();
+                            StorageService().removeUserName();
+                            print("Token removed");
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              AppRoutesNames.signIn,
+                              (route) => false,
+                            );
+                          },
+                        );
                       },
                       image: SvgPicture.asset(
                         ImageRes.logout,
@@ -154,8 +193,7 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       title: "Sign out",
                       isLast: true,
-                      textColor: AppColors
-                          .secondaryTextColor, // Or red? Keeping grey based on image
+                      textColor: AppColors.secondaryTextColor,
                     ),
                   ],
                 ),

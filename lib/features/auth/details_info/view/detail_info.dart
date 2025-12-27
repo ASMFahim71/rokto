@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/widgets/address_selector.dart';
 import 'package:rokto/core/common/widgets/bloodtype.dart';
 import 'package:rokto/core/common/widgets/elevated_button.dart';
 
@@ -9,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rokto/core/models/address_models.dart';
 import 'package:rokto/features/auth/details_info/provider/address_provider.dart';
 import 'package:rokto/features/auth/details_info/view/detail_info_widgets.dart';
+import 'package:rokto/features/auth/details_info/controller/detail_info_controller.dart';
 
 class DetailInfo extends ConsumerStatefulWidget {
   const DetailInfo({super.key});
@@ -37,68 +39,14 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
   ];
 
   void _selectDate(BuildContext context) {
-    DateTime tempPickedDate = DateTime.now();
-    showModalBottomSheet(
+    showCustomDatePicker(
       context: context,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
-      builder: (BuildContext builder) {
-        return Container(
-          height: 300.h,
-          padding: EdgeInsets.only(top: 6.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CupertinoButton(
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryColor,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  CupertinoButton(
-                    child: Text(
-                      'Done',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryColor,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _dateController.text = "${tempPickedDate.toLocal()}"
-                            .split(' ')[0];
-                      });
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-              Expanded(
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now(),
-                  minimumDate: DateTime(1900),
-                  maximumDate: DateTime.now(),
-                  onDateTimeChanged: (DateTime newDate) {
-                    tempPickedDate = newDate;
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
+      maximumDate: DateTime.now(),
+      onDateSelected: (pickedDate) {
+        setState(() {
+          _dateController.text =
+              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+        });
       },
     );
   }
@@ -133,194 +81,34 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
               SizedBox(height: 20.h),
 
               // Address Section
-              Text(
-                'Address',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryTextColor,
-                ),
+              AddressSelector(
+                title: "Address",
+                selectedDivision: selectedDivision,
+                selectedDistrict: selectedDistrict,
+                selectedUpazila: selectedUpazila,
+                onDivisionChanged: (val) {
+                  setState(() {
+                    if (selectedDivision != val) {
+                      selectedDivision = val;
+                      selectedDistrict = null;
+                      selectedUpazila = null;
+                    }
+                  });
+                },
+                onDistrictChanged: (val) {
+                  setState(() {
+                    if (selectedDistrict != val) {
+                      selectedDistrict = val;
+                      selectedUpazila = null;
+                    }
+                  });
+                },
+                onUpazilaChanged: (val) {
+                  setState(() {
+                    selectedUpazila = val;
+                  });
+                },
               ),
-              SizedBox(height: 10.h),
-
-              // Division Dropdown
-              // Division Dropdown
-              ref
-                  .watch(divisionListProvider)
-                  .when(
-                    data: (divisions) => SelectionField<Division>(
-                      label: 'Division',
-                      value: selectedDivision,
-                      items: divisions,
-                      getLabel: (item) => item.name,
-                      isLoading: false,
-                      hasError: false,
-                      onRetry: () => ref.refresh(divisionListProvider),
-                      onRefresh: () => ref.refresh(divisionListProvider),
-                      onChanged: (val) {
-                        setState(() {
-                          if (selectedDivision != val) {
-                            selectedDivision = val;
-                            selectedDistrict = null;
-                            selectedUpazila = null;
-                          }
-                        });
-                      },
-                    ),
-                    loading: () => SelectionField<Division>(
-                      label: 'Division',
-                      value: null,
-                      items: [],
-                      getLabel: (item) => '',
-                      isLoading: true,
-                      hasError: false,
-                      onRetry: () {},
-                      onRefresh: () {},
-                      onChanged: (_) {},
-                    ),
-                    error: (err, stack) => SelectionField<Division>(
-                      label: 'Division',
-                      value: null,
-                      items: [],
-                      getLabel: (item) => '',
-                      isLoading: false,
-                      hasError: true,
-                      onRetry: () => ref.refresh(divisionListProvider),
-                      onRefresh: () {},
-                      onChanged: (_) {},
-                    ),
-                  ),
-
-              SizedBox(height: 16.h),
-
-              // District Dropdown
-              if (selectedDivision != null)
-                ref
-                    .watch(districtListProvider(selectedDivision!.id))
-                    .when(
-                      data: (districts) => SelectionField<District>(
-                        label: 'District',
-                        value: selectedDistrict,
-                        items: districts,
-                        getLabel: (item) => item.name,
-                        isLoading: false,
-                        hasError: false,
-                        onRetry: () => ref.refresh(
-                          districtListProvider(selectedDivision!.id),
-                        ),
-                        onRefresh: () => ref.refresh(
-                          districtListProvider(selectedDivision!.id),
-                        ),
-                        onChanged: (val) {
-                          setState(() {
-                            if (selectedDistrict != val) {
-                              selectedDistrict = val;
-                              selectedUpazila = null;
-                            }
-                          });
-                        },
-                      ),
-                      loading: () => SelectionField<District>(
-                        label: 'District',
-                        value: null,
-                        items: [],
-                        getLabel: (item) => '',
-                        isLoading: true,
-                        hasError: false,
-                        onRetry: () {},
-                        onRefresh: () {},
-                        onChanged: (_) {},
-                      ),
-                      error: (err, stack) => SelectionField<District>(
-                        label: 'District',
-                        value: null,
-                        items: [],
-                        getLabel: (item) => '',
-                        isLoading: false,
-                        hasError: true,
-                        onRetry: () => ref.refresh(
-                          districtListProvider(selectedDivision!.id),
-                        ),
-                        onRefresh: () {},
-                        onChanged: (_) {},
-                      ),
-                    )
-              else
-                SelectionField<District>(
-                  label: 'District',
-                  value: null,
-                  items: [],
-                  getLabel: (item) => '',
-                  isLoading: false,
-                  hasError: false,
-                  onRetry: () {},
-                  onRefresh: () {},
-                  onChanged: (_) {},
-                ),
-
-              SizedBox(height: 16.h),
-
-              // Upazila Dropdown
-              if (selectedDistrict != null)
-                ref
-                    .watch(upazilaListProvider(selectedDistrict!.id))
-                    .when(
-                      data: (upazilas) => SelectionField<Upazila>(
-                        label: 'Upazila',
-                        value: selectedUpazila,
-                        items: upazilas,
-                        getLabel: (item) => item.name,
-                        isLoading: false,
-                        hasError: false,
-                        onRetry: () => ref.refresh(
-                          upazilaListProvider(selectedDistrict!.id),
-                        ),
-                        onRefresh: () => ref.refresh(
-                          upazilaListProvider(selectedDistrict!.id),
-                        ),
-                        onChanged: (val) {
-                          setState(() {
-                            selectedUpazila = val;
-                          });
-                        },
-                      ),
-                      loading: () => SelectionField<Upazila>(
-                        label: 'Upazila',
-                        value: null,
-                        items: [],
-                        getLabel: (item) => '',
-                        isLoading: true,
-                        hasError: false,
-                        onRetry: () {},
-                        onRefresh: () {},
-                        onChanged: (_) {},
-                      ),
-                      error: (err, stack) => SelectionField<Upazila>(
-                        label: 'Upazila',
-                        value: null,
-                        items: [],
-                        getLabel: (item) => '',
-                        isLoading: false,
-                        hasError: true,
-                        onRetry: () => ref.refresh(
-                          upazilaListProvider(selectedDistrict!.id),
-                        ),
-                        onRefresh: () {},
-                        onChanged: (_) {},
-                      ),
-                    )
-              else
-                SelectionField<Upazila>(
-                  label: 'Upazila',
-                  value: null,
-                  items: [],
-                  getLabel: (item) => '',
-                  isLoading: false,
-                  hasError: false,
-                  onRetry: () {},
-                  onRefresh: () {},
-                  onChanged: (_) {},
-                ),
 
               SizedBox(height: 24.h),
 
@@ -353,7 +141,7 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
                 onTap: () => _selectDate(context),
                 style: TextStyle(fontSize: 14.sp),
                 decoration: buildInputDecoration(
-                  'Last Donate Date',
+                  'Last Donate Date (Optional)',
                   suffixIcon: const Icon(
                     Icons.calendar_today,
                     color: AppColors.primaryColor,
@@ -364,22 +152,27 @@ class _DetailInfoState extends ConsumerState<DetailInfo> {
               SizedBox(height: 24.h),
 
               // Optional Details
-              TextFormField(
-                controller: _optionalController,
-                maxLines: 1,
-                style: TextStyle(fontSize: 14.sp),
-                decoration: buildInputDecoration(
-                  'Your Area',
-                  alignLabelWithHint: true,
-                ),
-              ),
-
               SizedBox(height: 40.h),
 
-              CustomElevatedButton(
-                text: 'SAVE & CONTINUE',
-                onPressed: () {
-                  // Handle Save Logic
+              Consumer(
+                builder: (context, ref, child) {
+                  final isLoading = ref.watch(detailInfoControllerProvider);
+                  return CustomElevatedButton(
+                    text: 'SAVE & CONTINUE',
+                    isLoading: isLoading,
+                    onPressed: () {
+                      ref
+                          .read(detailInfoControllerProvider.notifier)
+                          .saveDetails(
+                            divisionId: selectedDivision?.id,
+                            districtId: selectedDistrict?.id,
+                            upazilaId: selectedUpazila?.id,
+                            bloodGroup: selectedBloodGroup,
+                            lastDonateDate: _dateController.text,
+                            context: context,
+                          );
+                    },
+                  );
                 },
               ),
               SizedBox(height: 20.h),
