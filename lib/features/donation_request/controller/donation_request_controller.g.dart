@@ -14,7 +14,7 @@ const donationRequestControllerProvider = DonationRequestControllerProvider._();
 
 final class DonationRequestControllerProvider
     extends
-        $NotifierProvider<
+        $AsyncNotifierProvider<
           DonationRequestController,
           List<DonationRequestModel>
         > {
@@ -35,37 +35,32 @@ final class DonationRequestControllerProvider
   @$internal
   @override
   DonationRequestController create() => DonationRequestController();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<DonationRequestModel> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<DonationRequestModel>>(value),
-    );
-  }
 }
 
 String _$donationRequestControllerHash() =>
-    r'9c16dcac1a866a89ea99577f8146286392261246';
+    r'2d050e17216afde833d292b76b2340543eaebf3d';
 
 abstract class _$DonationRequestController
-    extends $Notifier<List<DonationRequestModel>> {
-  List<DonationRequestModel> build();
+    extends $AsyncNotifier<List<DonationRequestModel>> {
+  FutureOr<List<DonationRequestModel>> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
     final ref =
         this.ref
-            as $Ref<List<DonationRequestModel>, List<DonationRequestModel>>;
+            as $Ref<
+              AsyncValue<List<DonationRequestModel>>,
+              List<DonationRequestModel>
+            >;
     final element =
         ref.element
             as $ClassProviderElement<
               AnyNotifier<
-                List<DonationRequestModel>,
+                AsyncValue<List<DonationRequestModel>>,
                 List<DonationRequestModel>
               >,
-              List<DonationRequestModel>,
+              AsyncValue<List<DonationRequestModel>>,
               Object?,
               Object?
             >;

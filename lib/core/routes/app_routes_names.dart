@@ -13,4 +13,5 @@ class AppRoutesNames {
   static const String report = '/report';
   static const String profileScreen = '/profile_screen';
   static const String createRequest = '/create_request';
+  static const String myRequests = '/my_requests';
 }

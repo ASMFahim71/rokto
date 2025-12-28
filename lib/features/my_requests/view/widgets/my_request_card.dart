@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/common/utils/image_res.dart';
-import '../models/donation_request_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/core/common/utils/image_res.dart';
+import 'package:rokto/features/donation_request/model/order.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class DonationRequestCard extends StatelessWidget {
-  final DonationRequestModel request;
-  final VoidCallback onDonate;
+class MyRequestCard extends StatelessWidget {
+  final Order order;
+  final VoidCallback onTap;
 
-  const DonationRequestCard({
-    super.key,
-    required this.request,
-    required this.onDonate,
-  });
+  const MyRequestCard({super.key, required this.order, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140.h,
       width: 374.w,
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
@@ -43,84 +38,77 @@ class DonationRequestCard extends StatelessWidget {
               children: [
                 _buildInfoRow(
                   'Hospital Name',
-                  request.name,
+                  order.hospitalName ?? "Unknown Hospital",
                   fontSize: 16.sp,
                   isBold: true,
                 ),
                 SizedBox(height: 12.h),
-                _buildInfoRow('Location', request.location, fontSize: 13.sp),
+                _buildInfoRow(
+                  'Location',
+                  order.place ?? "Unknown Location",
+                  fontSize: 13.sp,
+                ),
                 SizedBox(height: 8.h),
-                Text(
-                  request.timeAgo,
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  children: [
+                    Icon(Icons.calendar_today, size: 12.sp, color: Colors.grey),
+                    SizedBox(width: 4.w),
+                    Text(
+                      order.date != null
+                          ? "${order.date!.day}/${order.date!.month}/${order.date!.year}"
+                          : "Unknown Date",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Icon(Icons.access_time, size: 12.sp, color: Colors.grey),
+                    SizedBox(width: 4.w),
+                    Text(
+                      order.time ?? "Unknown Time",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
 
-          // Right Side: Blood Group & Donate Button
-          Column(
-            children: [
-              Container(
-                width: 38.w,
-                height: 55.h,
-                child: Center(
-                  child: SvgPicture.asset(
-                    _getBloodGroupIcon(request.bloodGroup),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              SizedBox(
-                height: 32.h,
-                child: ElevatedButton(
-                  onPressed: onDonate,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  ),
-                  child: Text(
-                    'Donate',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          // Right Side: Blood Group
+          Container(
+            width: 40.w,
+            height: 55.h,
+            alignment: Alignment.center,
+            child: SvgPicture.asset(_getBloodGroupIcon(order.bloodGroupId)),
           ),
         ],
       ),
     );
   }
 
-  String _getBloodGroupIcon(String bloodGroup) {
-    switch (bloodGroup) {
-      case 'A+':
+  String _getBloodGroupIcon(int? bloodGroupId) {
+    switch (bloodGroupId) {
+      case 1:
         return ImageRes.bloodAPlus;
-      case 'A-':
+      case 2:
         return ImageRes.bloodAMinus;
-      case 'B+':
+      case 3:
         return ImageRes.bloodBPlus;
-      case 'B-':
+      case 4:
         return ImageRes.bloodBMinus;
-      case 'AB+':
+      case 5:
         return ImageRes.bloodABPlus;
-      case 'AB-':
+      case 6:
         return ImageRes.bloodABMinus;
-      case 'O+':
+      case 7:
         return ImageRes.bloodOPlus;
-      case 'O-':
+      case 8:
         return ImageRes.bloodOMinus;
       default:
         return ImageRes.bloodBPlus;

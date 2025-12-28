@@ -64,46 +64,88 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
     );
   }
 
-  Widget _buildBannerImage(BannerModel banner) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+Widget _buildBannerImage(BannerModel banner) {
+  final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+  final bannerHeight = 120.h;
+  final bannerWidth =
+      MediaQuery.of(context).size.width * 0.92; // viewportFraction
+
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 4.w),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20.r),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.08),
+          blurRadius: 12,
+          offset: const Offset(0, 6),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(20.r),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image(
+            image: ResizeImage(
+              AssetImage(banner.imageUrl),
+              width: (bannerWidth * devicePixelRatio).round(),
+              height: (bannerHeight * devicePixelRatio).round(),
+            ),
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) =>
+                Container(color: Colors.grey.shade200),
+          ),
+
+          // Gradient overlay
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0.6),
+                  Colors.transparent
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                stops: const [0.0, 0.8],
+              ),
+            ),
+          ),
+
+          // Text content
+          Positioned(
+            left: 16.w,
+            bottom: 16.h,
+            right: 16.w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  banner.title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  banner.subtitle,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.r),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image(
-              image: AssetImage(banner.imageUrl),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(color: Colors.grey[200]);
-              },
-            ),
-            // Gradient Overlay
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.black.withOpacity(0.4), Colors.transparent],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  stops: const [0.0, 0.6],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
+
 }

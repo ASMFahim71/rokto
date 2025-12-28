@@ -13,12 +13,13 @@ class ImageRes {
   static const String donate = "${_iconPath}donate.svg";
   static const String orderBlood = "${_iconPath}order.svg";
   static const String assistant = "${_iconPath}ai assistant.svg";
+  static const String myRequests = "${_iconPath}my_requests.svg";
   static const String report = "${_iconPath}report.svg";
   static const String campaign = "${_iconPath}campaign.svg";
   static const String bloodDrop = "${_iconPath}Blood Drop.svg";
   static const String spike = "${_iconPath}spike.svg";
   static const String profile = "${_iconPath}profile.svg";
-  static const String bloodBPlus = "${_iconPath}Blood Group.svg";
+  static const String bloodBPlus = "${_iconPath}B+.svg";
   static const String mapIcon = "${_iconPath}map-pin.svg";
   static const String bloodAPlus = "${_iconPath}A+.svg";
   static const String bloodABPlus = "${_iconPath}AB+.svg";

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
@@ -13,7 +13,7 @@ class SearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.h,
+      height: 50.h,
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
         borderRadius: BorderRadius.circular(10.r),
@@ -29,12 +29,16 @@ class SearchInput extends StatelessWidget {
         controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: EdgeInsets.all(12.w),
-            child: SvgPicture.asset(
-              ImageRes.searchIcon,
-              height: 24.h,
-              width: 24.w,
+          prefixIcon: Container(
+            width: 40.w,
+            height: 40.h,
+            child: Padding(
+              padding: EdgeInsets.all(12.w),
+              child: SvgPicture.asset(
+                ImageRes.searchIcon,
+                height: 24.h,
+                width: 24.w,
+              ),
             ),
           ),
           hintText: 'Search',
@@ -45,11 +49,12 @@ class SearchInput extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.r),
-            borderSide: BorderSide(color: AppColors.primaryFourElementText),
+            borderSide: BorderSide(
+              color: AppColors.primaryFourElementText,
+            ),
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 12.h),
         ),
-        textInputAction: TextInputAction.search,
       ),
     );
   }

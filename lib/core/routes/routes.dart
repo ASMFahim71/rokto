@@ -13,6 +13,7 @@ import 'package:rokto/features/donation_request/view/donation_request_screen.dar
 import 'package:rokto/features/report/view/report_screen.dart';
 import 'package:rokto/features/profile/view/profile_screen.dart';
 import 'package:rokto/features/create_request/view/create_request_screen.dart';
+import 'package:rokto/features/my_requests/view/my_requests_screen.dart';
 
 class AppPages {
   static List<RouteEntity> routes() {
@@ -47,6 +48,10 @@ class AppPages {
       RouteEntity(
         path: AppRoutesNames.createRequest,
         page: const CreateRequestScreen(),
+      ),
+      RouteEntity(
+        path: AppRoutesNames.myRequests,
+        page: const MyRequestsScreen(),
       ),
     ];
   }

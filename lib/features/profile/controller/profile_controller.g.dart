@@ -33,7 +33,7 @@ final class ProfileControllerProvider
   ProfileController create() => ProfileController();
 }
 
-String _$profileControllerHash() => r'7da6136c1bccad48a8a37a63953ff9bdb8709558';
+String _$profileControllerHash() => r'd313cc82c8b9866a58148ab5176b521f882d0afd';
 
 abstract class _$ProfileController extends $AsyncNotifier<ProfileStat> {
   FutureOr<ProfileStat> build();

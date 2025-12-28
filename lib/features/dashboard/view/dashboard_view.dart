@@ -161,7 +161,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          SvgPicture.asset(
             iconRes,
             height: 24.h,
             width: 24.w,
