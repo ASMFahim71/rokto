@@ -32,6 +32,7 @@ class ImageRes {
   // static const String drop="${_iconPath}drop.png";
   static const String callIcon = "${_iconPath}call.png";
   static const String callNow = "${_iconPath}call_now.svg";
+  static const String phone = "${_iconPath}phone.svg";
   static const String requestIcon = "${_iconPath}share.png";
   static const String request = "${_iconPath}Request.svg";
   static const String logout = "${_iconPath}logout.svg";

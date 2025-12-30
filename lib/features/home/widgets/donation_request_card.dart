@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 import '../models/donation_request_model.dart';
@@ -8,7 +9,6 @@ import 'package:rokto/core/common/utils/app_color.dart';
 class DonationRequestCard extends StatelessWidget {
   final DonationRequestModel request;
   final VoidCallback onDonate;
-
   const DonationRequestCard({
     super.key,
     required this.request,
@@ -17,9 +17,10 @@ class DonationRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Blood grop is ${request.bloodGroup}");
     return Container(
       height: 140.h,
-      width: 374.w,
+
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -51,7 +52,7 @@ class DonationRequestCard extends StatelessWidget {
                 _buildInfoRow('Location', request.location, fontSize: 13.sp),
                 SizedBox(height: 8.h),
                 Text(
-                  request.timeAgo,
+                  DateFormat('EEE, MMM d, y').format(request.date),
                   style: TextStyle(
                     color: Colors.grey[500],
                     fontSize: 11.sp,
@@ -104,23 +105,23 @@ class DonationRequestCard extends StatelessWidget {
     );
   }
 
-  String _getBloodGroupIcon(String bloodGroup) {
+  String _getBloodGroupIcon(int bloodGroup) {
     switch (bloodGroup) {
-      case 'A+':
+      case 1:
         return ImageRes.bloodAPlus;
-      case 'A-':
+      case 2:
         return ImageRes.bloodAMinus;
-      case 'B+':
+      case 3:
         return ImageRes.bloodBPlus;
-      case 'B-':
+      case 4:
         return ImageRes.bloodBMinus;
-      case 'AB+':
+      case 5:
         return ImageRes.bloodABPlus;
-      case 'AB-':
+      case 6:
         return ImageRes.bloodABMinus;
-      case 'O+':
+      case 7:
         return ImageRes.bloodOPlus;
-      case 'O-':
+      case 8:
         return ImageRes.bloodOMinus;
       default:
         return ImageRes.bloodBPlus;

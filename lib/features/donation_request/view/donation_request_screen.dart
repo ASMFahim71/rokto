@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/features/donation_request/controller/donation_request_controller.dart';
+import 'package:rokto/features/home/widgets/donate_button.dart';
 import 'package:rokto/features/home/widgets/donation_request_card.dart';
 
 class DonationRequestScreen extends ConsumerWidget {
@@ -15,7 +16,7 @@ class DonationRequestScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildAppBar(title: "Donation Request"),
+      appBar: buildGlobalAppBar(context: context,title: "Donation Request"),
       body: requests.when(
         data: (requests) {
           if (requests.isEmpty) {
@@ -34,7 +35,10 @@ class DonationRequestScreen extends ConsumerWidget {
               return DonationRequestCard(
                 request: request,
                 onDonate: () {
-                  // TODO: Implement donation logic
+                  showDonationRequestBottomSheet(
+                    context: context,
+                    request: request,
+                  );
                 },
               );
             },

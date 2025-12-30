@@ -15,7 +15,7 @@ class MyRequestsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildAppBar(title: "My Requests"),
+      appBar: buildGlobalAppBar(context: context,title: "My Requests"),
       body: requestsAsync.when(
         data: (requests) {
           if (requests.isEmpty) {

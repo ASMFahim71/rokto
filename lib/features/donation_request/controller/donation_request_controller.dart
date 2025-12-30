@@ -14,49 +14,19 @@ class DonationRequestController extends _$DonationRequestController {
   Future<List<DonationRequestModel>> _fetchOrders() async {
     final orders = await OrderRepo.getOrders();
     return orders.map((order) {
+      print("Blood group is controller ${order.bloodGroupId}");
       return DonationRequestModel(
         name: order.hospitalName ?? "Unknown Hospital",
         location: order.place ?? "Unknown Location",
-        timeAgo: _calculateTimeAgo(order.date),
-        bloodGroup: _getBloodGroupString(order.bloodGroupId),
+        date: order.date ?? DateTime.now(),
+        bloodGroup: order.bloodGroupId!,
+        description: order.cause ?? "No description available",
+        phoneNumber: order.contactNumber ?? "Unknown",
+        division: order.divisionName ?? "Unknown",
+        district: order.districtName ?? "Unknown",
+        upazila: order.upazilaName ?? "Unknown",
+        time: order.time ?? "Unknown",
       );
     }).toList();
-  }
-
-  String _calculateTimeAgo(DateTime? date) {
-    if (date == null) return "Unknown time";
-    final duration = DateTime.now().difference(date);
-    if (duration.inDays > 0) {
-      return "${duration.inDays} days ago";
-    } else if (duration.inHours > 0) {
-      return "${duration.inHours} hours ago";
-    } else if (duration.inMinutes > 0) {
-      return "${duration.inMinutes} min ago";
-    } else {
-      return "Just now";
-    }
-  }
-
-  String _getBloodGroupString(int? bloodGroupId) {
-    switch (bloodGroupId) {
-      case 1:
-        return 'A+';
-      case 2:
-        return 'A-';
-      case 3:
-        return 'B+';
-      case 4:
-        return 'B-';
-      case 5:
-        return 'AB+';
-      case 6:
-        return 'AB-';
-      case 7:
-        return 'O+';
-      case 8:
-        return 'O-';
-      default:
-        return 'Unknown';
-    }
   }
 }

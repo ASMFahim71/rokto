@@ -70,7 +70,7 @@ class ProfileScreen extends ConsumerWidget {
                   GestureDetector(
                     onTap: () {
                       // TODO: Implement Call Now
-                      toastInfo("Not implemented yet");
+                      toastInfo("Comming soon");
                     },
                     child: SvgPicture.asset(
                       ImageRes.callNow,
@@ -80,8 +80,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // TODO: Implement Request
-                      toastInfo("Not implemented yet");
+                      Navigator.pushNamed(context, AppRoutesNames.createRequest);
                     },
                     child: SvgPicture.asset(
                       ImageRes.request,

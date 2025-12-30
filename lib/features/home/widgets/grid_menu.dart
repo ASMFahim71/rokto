@@ -38,7 +38,9 @@ class GridMenu extends StatelessWidget {
           HomeGridButton(
             icon: ImageRes.orderBlood,
             label: 'Order Blood',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutesNames.createRequest);
+            },
           ),
           HomeGridButton(
             icon: ImageRes.myRequests,
@@ -58,7 +60,7 @@ class GridMenu extends StatelessWidget {
             icon: ImageRes.campaign,
             label: 'Campaign',
             onTap: () {
-              toastInfo("Not implemented yet");
+              toastInfo("Comming soon");
             },
           ),
         ],
