@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
@@ -27,10 +28,10 @@ class ReportScreen extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.location_on_outlined,
-                  color: AppColors.primaryColor,
-                  size: 16.sp,
+                SvgPicture.asset(
+                  ImageRes.mapIcon,
+                  height: 16.h,
+                  width: 16.w,
                 ),
                 SizedBox(width: 5.w),
                 Text(

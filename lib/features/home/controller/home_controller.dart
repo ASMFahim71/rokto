@@ -7,8 +7,8 @@ final bannerProvider = FutureProvider<List<BannerModel>>((ref) async {
   return HomeRepo.fetchBanners();
 });
 
-final donationRequestProvider = FutureProvider<DonationRequestModel>((
+ final  donationRequestProvider = FutureProvider<List<DonationRequestModel>>((
   ref,
 ) async {
-  return HomeRepo.fetchDonationRequest();
+  return await HomeRepo.fetchDonationRequest();
 });

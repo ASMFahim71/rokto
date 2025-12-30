@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 
@@ -31,7 +32,14 @@ class SearchInput extends StatelessWidget {
           prefixIcon: Container(
             width: 40.w,
             height: 40.h,
-            child:Image.asset(ImageRes.searchIcon),
+            child: Padding(
+              padding: EdgeInsets.all(12.w),
+              child: SvgPicture.asset(
+                ImageRes.searchIcon,
+                height: 24.h,
+                width: 24.w,
+              ),
+            ),
           ),
           hintText: 'Search',
           hintStyle: TextStyle(

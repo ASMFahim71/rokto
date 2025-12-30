@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 import '../models/donation_request_model.dart';
@@ -8,7 +9,6 @@ import 'package:rokto/core/common/utils/app_color.dart';
 class DonationRequestCard extends StatelessWidget {
   final DonationRequestModel request;
   final VoidCallback onDonate;
-
   const DonationRequestCard({
     super.key,
     required this.request,
@@ -16,11 +16,11 @@ class DonationRequestCard extends StatelessWidget {
   });
 
   @override
-  @override
   Widget build(BuildContext context) {
+    print("Blood grop is ${request.bloodGroup}");
     return Container(
       height: 140.h,
-      width: 374.w,
+
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -43,7 +43,7 @@ class DonationRequestCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildInfoRow(
-                  'Name',
+                  'Hospital Name',
                   request.name,
                   fontSize: 16.sp,
                   isBold: true,
@@ -52,7 +52,7 @@ class DonationRequestCard extends StatelessWidget {
                 _buildInfoRow('Location', request.location, fontSize: 13.sp),
                 SizedBox(height: 8.h),
                 Text(
-                  request.timeAgo,
+                  DateFormat('EEE, MMM d, y').format(request.date),
                   style: TextStyle(
                     color: Colors.grey[500],
                     fontSize: 11.sp,
@@ -71,8 +71,7 @@ class DonationRequestCard extends StatelessWidget {
                 height: 55.h,
                 child: Center(
                   child: SvgPicture.asset(
-                    ImageRes.bloodBPlus,
-                    
+                    _getBloodGroupIcon(request.bloodGroup),
                   ),
                 ),
               ),
@@ -104,6 +103,29 @@ class DonationRequestCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getBloodGroupIcon(int bloodGroup) {
+    switch (bloodGroup) {
+      case 1:
+        return ImageRes.bloodAPlus;
+      case 2:
+        return ImageRes.bloodAMinus;
+      case 3:
+        return ImageRes.bloodBPlus;
+      case 4:
+        return ImageRes.bloodBMinus;
+      case 5:
+        return ImageRes.bloodABPlus;
+      case 6:
+        return ImageRes.bloodABMinus;
+      case 7:
+        return ImageRes.bloodOPlus;
+      case 8:
+        return ImageRes.bloodOMinus;
+      default:
+        return ImageRes.bloodBPlus;
+    }
   }
 
   Widget _buildInfoRow(

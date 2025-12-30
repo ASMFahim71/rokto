@@ -42,7 +42,7 @@ final class CreateRequestControllerProvider
 }
 
 String _$createRequestControllerHash() =>
-    r'dabcad3f687376d5e615c87f5b107f287af499ff';
+    r'5f388950ab1c529e366c78b4d88fbfc3094676ac';
 
 abstract class _$CreateRequestController extends $Notifier<void> {
   void build();

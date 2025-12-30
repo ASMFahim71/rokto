@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
-
-import 'package:rokto/features/home/widgets/userImage.dart';
+import 'package:rokto/features/donation_request/controller/donation_request_controller.dart';
+import 'package:rokto/features/home/widgets/donate_button.dart';
 import 'package:rokto/features/home/widgets/donation_request_header.dart';
 import 'package:rokto/features/home/widgets/grid_menu.dart';
 import '../controller/home_controller.dart';
@@ -11,14 +11,14 @@ import '../widgets/home_banner_carousel.dart';
 import '../widgets/donation_request_card.dart';
 import '../../../core/common/widgets/text_widgets.dart';
 import '../../../core/common/utils/app_color.dart';
-
+import 'package:intl/intl.dart';
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bannersAsync = ref.watch(bannerProvider);
-    final donationRequestAsync = ref.watch(donationRequestProvider);
+    final requests = ref.watch(donationRequestControllerProvider);
     String userName = StorageService().getUserName() ?? "Hero";
 
     return SafeArea(
@@ -111,18 +111,39 @@ class HomeView extends ConsumerWidget {
                   // 4. Donation Request Card
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: donationRequestAsync.when(
-                      data: (request) => DonationRequestCard(
-                        request: request,
-                        onDonate: () {},
-                      ),
+                    child: requests.when(
+                      data: (requests) {
+                        if (requests.isEmpty) {
+                          return const Center(
+                            child: Text("No donation requests found"),
+                          );
+                        }
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 2,
+                          itemBuilder: (context, index) {
+                            final request = requests[index];
+                            return DonationRequestCard(
+                              request: request,
+                              onDonate: () {
+                                showDonationRequestBottomSheet(
+                                  context: context,
+                                  request: request,
+                                );
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 15.h),
+                        );
+                      },
                       loading: () => const Center(
                         child: CircularProgressIndicator(
                           color: AppColors.primaryColor,
                         ),
                       ),
-                      error: (err, stack) =>
-                          const Text('Error loading request'),
+                      error: (err, stack) => Center(child: Text('Error: $err')),
                     ),
                   ),
                 ],

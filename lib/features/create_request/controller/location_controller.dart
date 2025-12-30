@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rokto/features/create_request/repository/location_repository.dart';
+import 'package:rokto/features/create_request/model/location_models.dart';
 
 part 'location_controller.g.dart';
 
@@ -10,18 +11,18 @@ class LocationController extends _$LocationController {
     return;
   }
 
-  Future<List<String>> getDistricts() async {
+  Future<List<Division>> getDivisions() async {
     final repository = ref.read(locationRepositoryProvider);
-    return await repository.getDistricts();
+    return await repository.getDivisions();
   }
 
-  Future<List<String>> getThanas(String district) async {
+  Future<List<District>> getDistricts(String divisionId) async {
     final repository = ref.read(locationRepositoryProvider);
-    return await repository.getThanas(district);
+    return await repository.getDistricts(divisionId);
   }
 
-  Future<List<String>> getUpazilas(String thana) async {
+  Future<List<Upazila>> getUpazilas(String districtId) async {
     final repository = ref.read(locationRepositoryProvider);
-    return await repository.getUpazilas(thana);
+    return await repository.getUpazilas(districtId);
   }
 }

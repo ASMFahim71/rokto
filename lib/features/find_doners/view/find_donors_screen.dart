@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
 import '../controller/find_donors_controller.dart';
-import 'widgets/search_bar.dart';
-import 'widgets/filter_button.dart';
 import 'widgets/donor_card.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/core/common/widgets/text_widgets.dart';
+import 'package:rokto/core/common/widgets/address_selector.dart';
 
 class FindDonorsScreen extends ConsumerWidget {
   const FindDonorsScreen({super.key});
@@ -25,22 +24,55 @@ class FindDonorsScreen extends ConsumerWidget {
           return Column(
             children: [
               SizedBox(height: 20.h),
-              // Top Search and Filter
+              // Search Filters
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: SearchBarWidget(
-                        onChanged: (query) => controller.searchDonors(query),
-                      ),
+                    AddressSelector(
+                      selectedDivision: controller.selectedDivision,
+                      selectedDistrict: controller.selectedDistrict,
+                      selectedUpazila: controller.selectedUpazila,
+                      onDivisionChanged: controller.onDivisionChanged,
+                      onDistrictChanged: controller.onDistrictChanged,
+                      onUpazilaChanged: controller.onUpazilaChanged,
                     ),
-                    16.horizontalSpace,
-                    FilterButtonWidget(
-                      onTap: () {
-                        // Implement filter logic or show dialog
-                      },
+                    SizedBox(height: 16.h),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50.h,
+                      child: ElevatedButton.icon(
+                        onPressed: controller.isLoading
+                            ? null
+                            : () => controller.findDonors(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        icon: controller.isLoading
+                            ? Container(
+                                width: 24.w,
+                                height: 24.h,
+                                padding: const EdgeInsets.all(2.0),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                              )
+                            : const Icon(Icons.search),
+                        label: Text(
+                          controller.isLoading
+                              ? "Searching..."
+                              : "Search Donors",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -48,13 +80,7 @@ class FindDonorsScreen extends ConsumerWidget {
               20.verticalSpace,
               // List
               Expanded(
-                child: controller.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.primaryColor,
-                        ),
-                      )
-                    : controller.displayDonors.isEmpty
+                child: controller.displayDonors.isEmpty
                     ? Center(
                         child: Text16Normal(
                           text: 'No donors found',

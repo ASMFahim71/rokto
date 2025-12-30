@@ -1,34 +1,18 @@
-import 'package:dio/dio.dart';
+import 'package:rokto/core/common/services/httputil.dart';
 import 'package:rokto/features/donation_request/model/order.dart';
-import 'package:rokto/core/common/utils/constants.dart';
 
 class OrderRepo {
-  final Dio _dio = Dio();
-  // TODO: Replace with your actual backend base URL
-  final String baseUrl = AppConstants.SERVER_API_URL;
-
-  Future<bool> createOrder(Order order) async {
+  static Future<List<Order>> getOrders() async {
     try {
-      final response = await _dio.post(
-        '$baseUrl/orders',
-        data: order.toJson(),
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            //'Authorization': 'Bearer ${AppConstants.STORAGE_USER_TOKEN_KEY}',
-          },
-        ),
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return true;
+      var response = await HttpUtil().get('/orders');
+      if (response['code'] == 200) {
+        List<dynamic> data = response['data'];
+        return data.map((json) => Order.fromJson(json)).toList();
       }
-      return false;
+      return [];
     } catch (e) {
-      // ignore: avoid_print
-      print('Error creating order: $e');
-      return false;
+      print('Error fetching orders: $e');
+      return [];
     }
   }
 }
