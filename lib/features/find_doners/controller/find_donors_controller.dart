@@ -26,7 +26,9 @@ class FindDonorsController extends ChangeNotifier {
   Upazila? _selectedUpazila;
   String? _selectedBloodGroup;
 
-  FindDonorsController(this.ref);
+  FindDonorsController(this.ref) {
+    findDonors();
+  }
 
   List<DonorModel> get displayDonors => _displayDonors;
   bool get isLoading => _isLoading;
@@ -59,24 +61,37 @@ class FindDonorsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> findDonors() async {
-    if (_selectedDivision == null ||
-        _selectedDistrict == null ||
-        _selectedUpazila == null) {
-      return;
-    }
+  void clearFilters() {
+    _selectedDivision = null;
+    _selectedDistrict = null;
+    _selectedUpazila = null;
+    _selectedBloodGroup = null;
+    findDonors();
+  }
 
+  Future<void> findDonors() async {
     _isLoading = true;
     notifyListeners();
 
     final repo = ref.read(donorRepositoryProvider);
     try {
-      _displayDonors = await repo.findDonors(
-        divisionId: _selectedDivision!.id,
-        districtId: _selectedDistrict!.id,
-        upazilaId: _selectedUpazila!.id,
-        bloodGroupId: _selectedBloodGroup,
-      );
+      if (_selectedDivision != null ||
+          _selectedDistrict != null ||
+          _selectedUpazila != null) {
+        _displayDonors = await repo.findDonorsByLocation(
+          divisionId: _selectedDivision?.id,
+          districtId: _selectedDistrict?.id,
+          upazilaId: _selectedUpazila?.id,
+          bloodGroupId: _selectedBloodGroup,
+        );
+      } else {
+        _displayDonors = await repo.findDonors(
+          divisionId: _selectedDivision?.id,
+          districtId: _selectedDistrict?.id,
+          upazilaId: _selectedUpazila?.id,
+          bloodGroupId: _selectedBloodGroup,
+        );
+      }
     } catch (e) {
       _displayDonors = [];
     } finally {

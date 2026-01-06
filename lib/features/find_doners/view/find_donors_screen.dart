@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
+import 'package:rokto/features/find_doners/view/widgets/search_bar.dart';
+import 'package:rokto/features/search_nav_bar/view/widgets/search_input.dart';
 import '../controller/find_donors_controller.dart';
 import 'widgets/donor_card.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
@@ -27,51 +29,26 @@ class FindDonorsScreen extends ConsumerWidget {
               // Search Filters
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
+                child: Row(
                   children: [
-                    AddressSelector(
-                      selectedDivision: controller.selectedDivision,
-                      selectedDistrict: controller.selectedDistrict,
-                      selectedUpazila: controller.selectedUpazila,
-                      onDivisionChanged: controller.onDivisionChanged,
-                      onDistrictChanged: controller.onDistrictChanged,
-                      onUpazilaChanged: controller.onUpazilaChanged,
+                    Expanded(
+                      child: SearchBarWidget(
+                        onChanged: (value) {
+                          // Implement client-side filtering or name search if API supports
+                        },
+                      ),
                     ),
-                    SizedBox(height: 16.h),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50.h,
-                      child: ElevatedButton.icon(
-                        onPressed: controller.isLoading
-                            ? null
-                            : () => controller.findDonors(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
+                    10.horizontalSpace,
+                    GestureDetector(
+                      onTap: () => _showFilterBottomSheet(context, controller),
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
-                        icon: controller.isLoading
-                            ? Container(
-                                width: 24.w,
-                                height: 24.h,
-                                padding: const EdgeInsets.all(2.0),
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                              )
-                            : const Icon(Icons.search),
-                        label: Text(
-                          controller.isLoading
-                              ? "Searching..."
-                              : "Search Donors",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: const Icon(Icons.tune, color: Colors.white),
                       ),
                     ),
                   ],
@@ -80,7 +57,9 @@ class FindDonorsScreen extends ConsumerWidget {
               20.verticalSpace,
               // List
               Expanded(
-                child: controller.displayDonors.isEmpty
+                child: controller.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : controller.displayDonors.isEmpty
                     ? Center(
                         child: Text16Normal(
                           text: 'No donors found',
@@ -102,6 +81,108 @@ class FindDonorsScreen extends ConsumerWidget {
           );
         },
       ),
+    );
+  }
+
+  void _showFilterBottomSheet(
+    BuildContext context,
+    FindDonorsController controller,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) {
+        return ListenableBuilder(
+          listenable: controller,
+          builder: (context, child) {
+            return Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Filter Donors",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  20.verticalSpace,
+                  AddressSelector(
+                    selectedDivision: controller.selectedDivision,
+                    selectedDistrict: controller.selectedDistrict,
+                    selectedUpazila: controller.selectedUpazila,
+                    onDivisionChanged: controller.onDivisionChanged,
+                    onDistrictChanged: controller.onDistrictChanged,
+                    onUpazilaChanged: controller.onUpazilaChanged,
+                  ),
+                  30.verticalSpace,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            controller.clearFilters();
+                            Navigator.pop(context);
+                          },
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            side: const BorderSide(
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          child: Text(
+                            "Reset",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      16.horizontalSpace,
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            controller.findDonors();
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 12.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
+                          child: Text(
+                            "Apply Filters",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  20.verticalSpace,
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
