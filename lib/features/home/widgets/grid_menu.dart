@@ -17,8 +17,8 @@ class GridMenu extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         clipBehavior: Clip.none,
         crossAxisCount: 3,
-        crossAxisSpacing: 16.w,
-        mainAxisSpacing: 20.h,
+        crossAxisSpacing: 8.w,
+      //  mainAxisSpacing: 1.h,
         childAspectRatio: 0.8,
         children: [
           HomeGridButton(
