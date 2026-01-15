@@ -118,7 +118,7 @@ class _CreateRequestScreenState extends ConsumerState<CreateRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(context: context,title: "Create A Request"),
+      appBar: buildAppBar(title: "Create A Request"),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(

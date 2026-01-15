@@ -16,7 +16,7 @@ class DonationRequestScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: buildGlobalAppBar(context: context,title: "Donation Request"),
+      appBar: buildAppBar(title: "Donation Request"),
       body: requests.when(
         data: (requests) {
           if (requests.isEmpty) {
