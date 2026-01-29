@@ -26,6 +26,18 @@ class FindDonorsController extends ChangeNotifier {
   Upazila? _selectedUpazila;
   String? _selectedBloodGroup;
 
+  // Blood Group Mapping
+  final Map<String, String> _bloodGroupIds = {
+    'A+': '1',
+    'A-': '2',
+    'B+': '3',
+    'B-': '4',
+    'AB+': '5',
+    'AB-': '6',
+    'O+': '7',
+    'O-': '8',
+  };
+
   FindDonorsController(this.ref) {
     findDonors();
   }
@@ -74,6 +86,14 @@ class FindDonorsController extends ChangeNotifier {
     notifyListeners();
 
     final repo = ref.read(donorRepositoryProvider);
+
+    // Get ID from mapping if available
+    String? bloodGroupId = _selectedBloodGroup;
+    if (_selectedBloodGroup != null &&
+        _bloodGroupIds.containsKey(_selectedBloodGroup)) {
+      bloodGroupId = _bloodGroupIds[_selectedBloodGroup];
+    }
+
     try {
       if (_selectedDivision != null ||
           _selectedDistrict != null ||
@@ -82,14 +102,14 @@ class FindDonorsController extends ChangeNotifier {
           divisionId: _selectedDivision?.id,
           districtId: _selectedDistrict?.id,
           upazilaId: _selectedUpazila?.id,
-          bloodGroupId: _selectedBloodGroup,
+          bloodGroupId: bloodGroupId,
         );
       } else {
         _displayDonors = await repo.findDonors(
           divisionId: _selectedDivision?.id,
           districtId: _selectedDistrict?.id,
           upazilaId: _selectedUpazila?.id,
-          bloodGroupId: _selectedBloodGroup,
+          bloodGroupId: bloodGroupId,
         );
       }
     } catch (e) {

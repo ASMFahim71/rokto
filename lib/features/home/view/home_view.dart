@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +13,6 @@ import '../widgets/home_banner_carousel.dart';
 import '../widgets/donation_request_card.dart';
 import '../../../core/common/widgets/text_widgets.dart';
 import '../../../core/common/utils/app_color.dart';
-import 'package:intl/intl.dart';
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
@@ -121,7 +122,7 @@ class HomeView extends ConsumerWidget {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 2,
+                          itemCount: min(requests.length, 2),
                           itemBuilder: (context, index) {
                             final request = requests[index];
                             return DonationRequestCard(

@@ -9,6 +9,7 @@ import 'widgets/donor_card.dart';
 import 'package:rokto/core/common/widgets/app_bar.dart';
 import 'package:rokto/core/common/widgets/text_widgets.dart';
 import 'package:rokto/core/common/widgets/address_selector.dart';
+import 'package:rokto/core/common/widgets/bloodtype.dart';
 
 class FindDonorsScreen extends ConsumerWidget {
   const FindDonorsScreen({super.key});
@@ -110,6 +111,32 @@ class FindDonorsScreen extends ConsumerWidget {
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  20.verticalSpace,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Blood Group",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  10.verticalSpace,
+                  BloodGroupSelector(
+                    selectedBloodGroup: controller.selectedBloodGroup,
+                    bloodGroups: const [
+                      'A+',
+                      'A-',
+                      'B+',
+                      'B-',
+                      'O+',
+                      'O-',
+                      'AB+',
+                      'AB-',
+                    ],
+                    onSelected: controller.onBloodGroupChanged,
                   ),
                   20.verticalSpace,
                   AddressSelector(
