@@ -4,53 +4,54 @@ import 'package:intl/intl.dart';
 import 'package:rokto/features/home/models/donation_request_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rokto/core/common/utils/app_color.dart';
-    String _formatTime(String time) {
+
+String _formatTime(String time) {
+  try {
+    final format = DateFormat("HH:mm:ss");
+    final dateTime = format.parse(time);
+    return DateFormat("h:mm a").format(dateTime);
+  } catch (e) {
     try {
-      final format = DateFormat("HH:mm:ss");
+      final format = DateFormat("HH:mm");
       final dateTime = format.parse(time);
       return DateFormat("h:mm a").format(dateTime);
     } catch (e) {
-      try {
-        final format = DateFormat("HH:mm");
-        final dateTime = format.parse(time);
-        return DateFormat("h:mm a").format(dateTime);
-      } catch (e) {
-        return time;
-      }
+      return time;
     }
   }
+}
 
-  Widget _buildPopupRow(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey[700],
-          ),
+Widget _buildPopupRow(String label, String value, {Color? color}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+          color: color ?? Colors.grey[700],
         ),
-        SizedBox(height: 4.h),
-        Text(
-          value,
-          style: TextStyle(fontSize: 14.sp, color: Colors.black87, height: 1.5),
-        ),
-      ],
-    );
-  }
+      ),
+      SizedBox(height: 4.h),
+      Text(
+        value,
+        style: TextStyle(fontSize: 14.sp, color: Colors.black87, height: 1.5),
+      ),
+    ],
+  );
+}
+
 void showDonationRequestBottomSheet({
   required BuildContext context,
   required DonationRequestModel request,
 }) {
   showModalBottomSheet(
+    backgroundColor: Colors.white,
     context: context,
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(20.r),
-      ),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
     ),
     builder: (context) => Padding(
       padding: EdgeInsets.only(
@@ -69,10 +70,7 @@ void showDonationRequestBottomSheet({
             children: [
               Text(
                 "Donation Request",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 onPressed: () => Navigator.pop(context),
@@ -104,7 +102,11 @@ void showDonationRequestBottomSheet({
           ),
           SizedBox(height: 8.h),
 
-          _buildPopupRow("Cause", request.description),
+          _buildPopupRow(
+            "Cause",
+            request.description,
+            color: AppColors.primaryColor,
+          ),
 
           SizedBox(height: 24.h),
 
@@ -114,21 +116,13 @@ void showDonationRequestBottomSheet({
             height: 50.h,
             child: ElevatedButton.icon(
               onPressed: () async {
-                final Uri uri = Uri(
-                  scheme: 'tel',
-                  path: request.phoneNumber,
-                );
+                final Uri uri = Uri(scheme: 'tel', path: request.phoneNumber);
 
                 if (await canLaunchUrl(uri)) {
-                  await launchUrl(
-                    uri,
-                    mode: LaunchMode.externalApplication,
-                  );
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
                 } else if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Could not launch dialer"),
-                    ),
+                    const SnackBar(content: Text("Could not launch dialer")),
                   );
                 }
               },
@@ -149,6 +143,4 @@ void showDonationRequestBottomSheet({
       ),
     ),
   );
-
-
 }

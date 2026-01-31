@@ -12,7 +12,9 @@ import 'package:rokto/core/common/widgets/address_selector.dart';
 import 'package:rokto/core/common/widgets/bloodtype.dart';
 
 class FindDonorsScreen extends ConsumerWidget {
-  const FindDonorsScreen({super.key});
+  final bool isBackButtonEnabled;
+
+  const FindDonorsScreen({super.key, this.isBackButtonEnabled = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +22,11 @@ class FindDonorsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: buildGlobalAppBar(title: 'Find Donors', context: context),
+      appBar: buildGlobalAppBar(
+        title: 'Find Donors',
+        context: context,
+        showBackButton: isBackButtonEnabled,
+      ),
       body: ListenableBuilder(
         listenable: controller,
         builder: (context, child) {
@@ -62,16 +68,26 @@ class FindDonorsScreen extends ConsumerWidget {
                     ? const Center(child: CircularProgressIndicator())
                     : controller.displayDonors.isEmpty
                     ? Center(
-                        child: Text16Normal(
-                          text: 'No donors found',
-                          color: AppColors.primaryTextColor,
-                          fontWeight: FontWeight.bold,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text16Normal(
+                              text: 'No donors found',
+                              color: AppColors.primaryTextColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            20.verticalSpace,
+                            _buildFindMoreButton(context, controller),
+                          ],
                         ),
                       )
                     : ListView.builder(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        itemCount: controller.displayDonors.length,
+                        itemCount: controller.displayDonors.length + 1,
                         itemBuilder: (context, index) {
+                          if (index == controller.displayDonors.length) {
+                            return _buildFindMoreButton(context, controller);
+                          }
                           return DonorCardWidget(
                             donor: controller.displayDonors[index],
                           );
@@ -81,6 +97,49 @@ class FindDonorsScreen extends ConsumerWidget {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildFindMoreButton(
+    BuildContext context,
+    FindDonorsController controller,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20.h),
+      child: GestureDetector(
+        onTap: () => _showFilterBottomSheet(context, controller),
+        child: Container(
+          width: double.infinity,
+          height: 50.h,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(color: AppColors.primaryColor),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadowColor,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Find more donors",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              10.horizontalSpace,
+              Icon(Icons.tune, color: AppColors.primaryColor, size: 18.sp),
+            ],
+          ),
+        ),
       ),
     );
   }

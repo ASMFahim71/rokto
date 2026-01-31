@@ -6,6 +6,9 @@ class DonorModel {
   final String location;
   final String? lastDonationDate;
   final int donationCount;
+  final String division;
+  final String district;
+  final String upazila;
 
   DonorModel({
     required this.id,
@@ -15,6 +18,9 @@ class DonorModel {
     required this.location,
     this.lastDonationDate,
     required this.donationCount,
+    required this.division,
+    required this.district,
+    required this.upazila,
   });
 
   factory DonorModel.fromJson(Map<String, dynamic> json) {
@@ -45,6 +51,9 @@ class DonorModel {
       location: location.isNotEmpty ? location : "Unknown Location",
       lastDonationDate: json['last_donation_date'],
       donationCount: json['donation_count'] ?? 0,
+      division: user['division']?['name'] ?? "Unknown",
+      district: user['district']?['name'] ?? "Unknown",
+      upazila: user['upazila']?['name'] ?? "Unknown",
     );
   }
 }

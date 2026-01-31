@@ -66,7 +66,7 @@ class DonationRequestCard extends StatelessWidget {
           // Right Side: Blood Group & Donate Button
           Column(
             children: [
-              Container(
+              SizedBox(
                 width: 38.w,
                 height: 55.h,
                 child: Center(
