@@ -5,7 +5,7 @@ import 'package:rokto/core/common/utils/app_color.dart';
 
 toastInfo(
   String str, {
-  Color backgroundColor = AppColors.primaryColor,
+  Color backgroundColor = Colors.black,
   Color textColor = Colors.white,
 }) {
   return Fluttertoast.showToast(
@@ -13,7 +13,7 @@ toastInfo(
     backgroundColor: backgroundColor,
     textColor: textColor,
     fontSize: 16.sp,
-    gravity: ToastGravity.BOTTOM,
+    gravity: ToastGravity.SNACKBAR,
   );
 }
 

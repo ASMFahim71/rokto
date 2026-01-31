@@ -55,28 +55,33 @@ class MyRequestCard extends ConsumerWidget {
                   children: [
                     Icon(Icons.calendar_today, size: 12.sp, color: Colors.grey),
                     SizedBox(width: 4.w),
-                    Text(
-                      order.date != null
-                          ? "${order.date!.day}/${order.date!.month}/${order.date!.year}"
-                          : "Unknown Date",
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        order.date != null
+                            ? "${order.date!.day}/${order.date!.month}/${order.date!.year}"
+                            : "Unknown Date",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     SizedBox(width: 10.w),
                     Icon(Icons.access_time, size: 12.sp, color: Colors.grey),
                     SizedBox(width: 4.w),
-                    Text(
-                      order.time ?? "Unknown Time",
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        order.time ?? "Unknown Time",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                    SizedBox(width: 100.w),
                   ],
                 ),
               ],

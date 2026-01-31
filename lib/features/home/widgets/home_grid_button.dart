@@ -24,9 +24,10 @@ class HomeGridButton extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(50.r),
           child: Container(
-            height: 70.h,
-            width: 70.w,
-            padding: EdgeInsets.all(16.r),
+           // color: Colors.yellow,
+            height:60.h,
+            width:60.w,
+            padding: EdgeInsets.all(13.r),
             decoration: BoxDecoration(
               color: AppColors.primaryColor.withOpacity(0.05),
               shape: BoxShape.circle,
@@ -36,11 +37,12 @@ class HomeGridButton extends StatelessWidget {
               colorFilter: const ColorFilter.mode(
                 AppColors.primaryColor,
                 BlendMode.srcIn,
+
               ),
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+       SizedBox(height: 8.h),
         Text(
           label,
           style: TextStyle(

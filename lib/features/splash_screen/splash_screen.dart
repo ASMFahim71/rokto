@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            SvgPicture.asset('assets/icons/Logo.svg', height: 130.h)
+            SvgPicture.asset('assets/icons/Logo.svg', height: 130.h,color: Colors.white,)
                 .animate()
                 .fadeIn(duration: 1000.ms, curve: Curves.easeOut)
                 .scale(

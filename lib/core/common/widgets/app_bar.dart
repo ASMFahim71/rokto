@@ -24,7 +24,11 @@ AppBar buildAppBar({String title = ''}) {
   );
 }
 
-AppBar buildGlobalAppBar({String title = '', required BuildContext context}) {
+AppBar buildGlobalAppBar({
+  String title = '',
+  required BuildContext context,
+  bool showBackButton = true,
+}) {
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
@@ -34,14 +38,16 @@ AppBar buildGlobalAppBar({String title = '', required BuildContext context}) {
       color: AppColors.primaryTextColor,
       fontWeight: FontWeight.bold,
     ),
-    leading: IconButton(
-      icon: Icon(
-        Icons.chevron_left_outlined,
-        color: AppColors.primaryColor,
-        size: 30.sp,
-      ),
-      onPressed: () => Navigator.pop(context),
-    ),
+    leading: showBackButton
+        ? IconButton(
+            icon: Icon(
+              Icons.chevron_left_outlined,
+              color: AppColors.primaryColor,
+              size: 30.sp,
+            ),
+            onPressed: () => Navigator.pop(context),
+          )
+        : null,
     scrolledUnderElevation: 0,
   );
 }

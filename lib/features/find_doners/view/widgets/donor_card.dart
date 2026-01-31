@@ -71,7 +71,7 @@ class DonorCardWidget extends StatelessWidget {
                       4.horizontalSpace,
                       Expanded(
                         child: Text(
-                          donor.location,
+                          "${donor.district}, ${donor.upazila}",
                           style: TextStyle(
                             color: AppColors.primaryThirdElementText,
                             fontSize: 12.sp,
@@ -136,6 +136,7 @@ class DonorCardWidget extends StatelessWidget {
       context: context,
       builder: (context) {
         return Dialog(
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),
           ),
