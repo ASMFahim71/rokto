@@ -11,7 +11,7 @@ class ProfileController extends _$ProfileController {
   Future<ProfileStat> build() async {
     final stats = await ProfileRepo.getProfileStats();
     final isAvailable = await ProfileRepo.getAvailability();
-
+    print("ProfileController: build isAvailable: $isAvailable");
     stats.isAvailable = isAvailable;
     return stats;
   }
@@ -54,7 +54,32 @@ class ProfileController extends _$ProfileController {
       print("Toggle failed: $e");
       // Revert on failure
       state = AsyncValue.data(currentState);
-      toastInfo("Failed to update status");
+      toastInfo("You can not turn on availability");
+    }
+  }
+
+  Future<void> updateLastDonationDate(DateTime date) async {
+    final formattedDate =
+        "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+    try {
+      await ProfileRepo.updateLastDonationDate(formattedDate);
+      toastInfo("Last donation date updated");
+
+      // Refresh availability status
+      final isAvailable = await ProfileRepo.getAvailability();
+      final currentState = state.value;
+      if (currentState != null) {
+        state = AsyncValue.data(
+          ProfileStat(
+            donationCount: currentState.donationCount,
+            requestCount: currentState.requestCount,
+            isAvailable: isAvailable,
+          ),
+        );
+      }
+    } catch (e) {
+      print("Failed to update last donation date: $e");
+      toastInfo("Failed to update date");
     }
   }
 }

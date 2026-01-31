@@ -102,9 +102,12 @@ class MyRequestCard extends ConsumerWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: order.status==1?Colors.green.withOpacity(0.1):Colors.red.withOpacity(0.1),
+                    color: _getStatusColor(order.status).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(4.r),
-                    border: Border.all(color: order.status==1?Colors.green:Colors.red, width: 1),
+                    border: Border.all(
+                      color: _getStatusColor(order.status),
+                      width: 1,
+                    ),
                   ),
                   child: Text(
                     _getStatusText(order.status),
@@ -237,11 +240,21 @@ class MyRequestCard extends ConsumerWidget {
 
   String _getStatusText(int? status) {
     if (status == 1) return "Fulfilled";
+    if (status != 1 && _isExpired(order.date)) return "Expired";
     return "Pending";
   }
 
   Color _getStatusColor(int? status) {
     if (status == 1) return Colors.green;
+    if (status != 1 && _isExpired(order.date)) return Colors.grey;
     return Colors.red;
+  }
+
+  bool _isExpired(DateTime? date) {
+    if (date == null) return false;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final orderDate = DateTime(date.year, date.month, date.day);
+    return orderDate.isBefore(today);
   }
 }
