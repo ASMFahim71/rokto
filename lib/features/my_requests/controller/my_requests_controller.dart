@@ -14,4 +14,21 @@ class MyRequestsController extends _$MyRequestsController {
   Future<List<Order>> _fetchMyRequests() async {
     return await MyRequestsRepo.getMyRequests();
   }
+
+  Future<bool> updateStatus(int orderId, int status) async {
+    final success = await MyRequestsRepo.updateRequestStatus(orderId, status);
+    if (success) {
+      final currentOrders = state.value;
+      if (currentOrders != null) {
+        final updatedOrders = currentOrders.map((order) {
+          if (order.id == orderId) {
+            return order.copyWith(status: status);
+          }
+          return order;
+        }).toList();
+        state = AsyncValue.data(updatedOrders);
+      }
+    }
+    return success;
+  }
 }

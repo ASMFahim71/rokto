@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rokto/core/common/utils/app_color.dart';
 import 'package:rokto/core/common/utils/image_res.dart';
 import 'package:rokto/features/donation_request/model/order.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyRequestCard extends StatelessWidget {
+import 'package:rokto/features/my_requests/controller/my_requests_controller.dart';
+
+class MyRequestCard extends ConsumerWidget {
   final Order order;
   final VoidCallback onTap;
 
   const MyRequestCard({super.key, required this.order, required this.onTap});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 374.w,
       padding: EdgeInsets.all(16.r),
@@ -74,18 +76,50 @@ class MyRequestCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                    SizedBox(width: 100.w),
                   ],
                 ),
               ],
             ),
           ),
 
-          // Right Side: Blood Group
-          Container(
-            width: 40.w,
-            height: 55.h,
-            alignment: Alignment.center,
-            child: SvgPicture.asset(_getBloodGroupIcon(order.bloodGroupId)),
+          // Right Side: Blood Group and Status
+          Column(
+            children: [
+              Container(
+                width: 40.w,
+                height: 55.h,
+                alignment: Alignment.center,
+                child: SvgPicture.asset(_getBloodGroupIcon(order.bloodGroupId)),
+              ),
+              SizedBox(height: 8.h),
+              GestureDetector(
+                onTap: () {
+                  if (order.status != 1) {
+                    _showFulfilledConfirmDialog(context, ref, order);
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(order.status).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4.r),
+                    border: Border.all(
+                      color: _getStatusColor(order.status),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    _getStatusText(order.status),
+                    style: TextStyle(
+                      color: _getStatusColor(order.status),
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -147,5 +181,80 @@ class MyRequestCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _showFulfilledConfirmDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Order order,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        bool isLoading = false;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text("Confirm"),
+              content: const Text("Fulfilled your request?"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // No
+                  },
+                  child: const Text("No"),
+                ),
+                ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await ref
+                              .read(myRequestsControllerProvider.notifier)
+                              .updateStatus(order.id!, 1);
+                          if (context.mounted) {
+                            Navigator.pop(context); // Yes
+                          }
+                        },
+                  child: isLoading
+                      ? SizedBox(
+                          width: 16.w,
+                          height: 16.w,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text("Yes"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  String _getStatusText(int? status) {
+    if (status == 1) return "Fulfilled";
+    if (status != 1 && _isExpired(order.date)) return "Expired";
+    return "Pending";
+  }
+
+  Color _getStatusColor(int? status) {
+    if (status == 1) return Colors.green;
+    if (status != 1 && _isExpired(order.date)) return Colors.grey;
+    return Colors.red;
+  }
+
+  bool _isExpired(DateTime? date) {
+    if (date == null) return false;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final orderDate = DateTime(date.year, date.month, date.day);
+    return orderDate.isBefore(today);
   }
 }

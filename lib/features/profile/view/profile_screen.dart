@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,11 +12,13 @@ import 'package:rokto/features/profile/controller/profile_controller.dart';
 import 'package:rokto/features/profile/view/widgets/setting_title.dart';
 import 'package:rokto/features/profile/view/widgets/stat_card.dart';
 import 'package:rokto/features/profile/view/widgets/user_location.dart';
+import 'package:rokto/features/profile/view/widgets/last_donate.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(profileControllerProvider);
@@ -80,7 +83,10 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutesNames.createRequest);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesNames.createRequest,
+                      );
                     },
                     child: SvgPicture.asset(
                       ImageRes.request,
@@ -120,7 +126,7 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     buildSettingsTile(
                       onTap: () {
-                        toastInfo("Not Implemented yet");
+                        //toastInfo("Not Implemented yet");
                       },
                       image: SvgPicture.asset(
                         ImageRes.calendar,
@@ -140,6 +146,8 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       isLast: false,
                     ),
+                    SizedBox(height: 10.h),
+                    const LastDonateWidget(),
                     SizedBox(height: 10.h),
                     buildSettingsTile(
                       onTap: () {

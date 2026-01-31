@@ -13,6 +13,7 @@ class Order {
     required this.divisionName,
     required this.districtName,
     required this.upazilaName,
+    this.status,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -30,12 +31,15 @@ class Order {
   final String? divisionName;
   final String? districtName;
   final String? upazilaName;
+  final int? status;
   final dynamic createdAt;
   final dynamic updatedAt;
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-      id: json["id"],
+      id: json["id"] is int
+          ? json["id"]
+          : (int.tryParse(json["id"]?.toString() ?? "") ?? json["order_id"]),
       requesterId: json["requester_id"],
       bloodGroupId: json["blood_group_id"],
       date: DateTime.tryParse(json["date"] ?? ""),
@@ -48,6 +52,9 @@ class Order {
       divisionName: json["division_name"],
       districtName: json["district_name"],
       upazilaName: json["upazila_name"],
+      status: json["is_managed"] is int
+          ? json["is_managed"]
+          : int.tryParse(json["is_managed"]?.toString() ?? "0"),
       createdAt: json["created_at"],
       updatedAt: json["updated_at"],
     );
@@ -67,7 +74,46 @@ class Order {
     "division_name": divisionName,
     "district_name": districtName,
     "upazila_name": upazilaName,
+    "status": status,
     "created_at": createdAt,
     "updated_at": updatedAt,
   };
+
+  Order copyWith({
+    int? id,
+    int? requesterId,
+    int? bloodGroupId,
+    DateTime? date,
+    String? time,
+    String? cause,
+    String? place,
+    String? gender,
+    String? hospitalName,
+    String? contactNumber,
+    String? divisionName,
+    String? districtName,
+    String? upazilaName,
+    int? status,
+    dynamic createdAt,
+    dynamic updatedAt,
+  }) {
+    return Order(
+      id: id ?? this.id,
+      requesterId: requesterId ?? this.requesterId,
+      bloodGroupId: bloodGroupId ?? this.bloodGroupId,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      cause: cause ?? this.cause,
+      place: place ?? this.place,
+      gender: gender ?? this.gender,
+      hospitalName: hospitalName ?? this.hospitalName,
+      contactNumber: contactNumber ?? this.contactNumber,
+      divisionName: divisionName ?? this.divisionName,
+      districtName: districtName ?? this.districtName,
+      upazilaName: upazilaName ?? this.upazilaName,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
