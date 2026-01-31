@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rokto/core/common/widgets/app_popup.dart';
 import 'package:rokto/core/models/profile_stat.dart';
 import 'package:rokto/features/profile/repo/profile_repo.dart';
-
+import 'package:rokto/core/common/utils/storage_service.dart';
 part 'profile_controller.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -61,6 +61,7 @@ class ProfileController extends _$ProfileController {
   Future<void> updateLastDonationDate(DateTime date) async {
     final formattedDate =
         "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+    await StorageService().setLastDonationDate(formattedDate);
     try {
       await ProfileRepo.updateLastDonationDate(formattedDate);
       toastInfo("Last donation date updated");

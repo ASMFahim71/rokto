@@ -27,7 +27,7 @@ class ImageRes {
   static const String bloodAMinus = "${_iconPath}A-.svg";
   static const String bloodABMinus = "${_iconPath}AB-.svg";
   static const String bloodOMinus = "${_iconPath}O-.svg";
-  static const String bloodBMinus = "${_iconPath}B-.png";
+  static const String bloodBMinus = "${_iconPath}B-.svg";
   static const String homeIcon = "${_iconPath}home.svg";
   // static const String drop="${_iconPath}drop.png";
   static const String callIcon = "${_iconPath}call.png";

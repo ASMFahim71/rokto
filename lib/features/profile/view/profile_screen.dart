@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,6 +14,7 @@ import 'package:rokto/features/profile/view/widgets/user_location.dart';
 import 'package:rokto/features/profile/view/widgets/last_donate.dart';
 import 'package:rokto/core/routes/app_routes_names.dart';
 import 'package:rokto/core/common/utils/storage_service.dart';
+import 'package:rokto/features/profile/view/widgets/last_donation_date.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -23,7 +23,6 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(profileControllerProvider);
     final stats = profileState.asData?.value;
-
     // Default values if loading or error
     final isAvailable = stats?.isAvailable ?? false;
     final donationCount = stats?.donationCount ?? 0;
@@ -65,37 +64,10 @@ class ProfileScreen extends ConsumerWidget {
               SizedBox(height: 8.h),
               // Location
               UserLocation(),
-              SizedBox(height: 24.h),
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: Implement Call Now
-                      toastInfo("Comming soon");
-                    },
-                    child: SvgPicture.asset(
-                      ImageRes.callNow,
-                      width: 158.w,
-                      height: 52.h,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutesNames.createRequest,
-                      );
-                    },
-                    child: SvgPicture.asset(
-                      ImageRes.request,
-                      width: 158.w,
-                      height: 52.h,
-                    ),
-                  ),
-                ],
-              ),
+              SizedBox(height: 8.h),
+              //showing last donate date
+              LastDonationDate(),
+              SizedBox(height: 10.h),
 
               SizedBox(height: 20.h),
               // Stats Row

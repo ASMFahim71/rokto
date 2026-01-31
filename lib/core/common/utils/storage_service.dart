@@ -36,6 +36,7 @@ class StorageService {
   static const String _storageUserNameKey = 'user_name_key';
   static const String _storageUserTokenKey = 'user_token_key';
   static const String _storageDeviceFirstOpenKey = 'device_first_open';
+  static const String _storageLastDonationDateKey = 'last_donation_date';
 
   // Specific Methods
   bool getDeviceFirstOpen() {
@@ -91,6 +92,14 @@ class StorageService {
 
   String? getUserDistrict() {
     return _prefs.getString(_storageUserDistrictKey);
+  }
+
+  Future<bool> setLastDonationDate(String date) {
+    return _prefs.setString(_storageLastDonationDateKey, date);
+  }
+
+  String? getLastDonationDate() {
+    return _prefs.getString(_storageLastDonationDateKey);
   }
 }
 
